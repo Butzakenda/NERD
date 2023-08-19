@@ -1,0 +1,59 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+/* Agrega esto a tus estilos CSS */
+.carousel-controls-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%; 
+}
+
+.custom-carousel-control {
+    
+    margin-top: 10%;
+    width: 40px;
+    height: 40px;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.custom-carousel-control > span{
+    color: black;
+}
+.custom-carousel-control .carousel-control-prev-icon,
+.custom-carousel-control .carousel-control-next-icon {
+    background-color: black;
+    filter: invert(1);
+}
+
+.custom-carousel-control:hover {
+    background-color: tu-color-hover-aqui;
+}
+header{
+    border: 2px solid black;
+    border-bottom: 8px solid black;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    background-color: blue;
+    margin-bottom: 15px;
+}
+.header{
+    text-align: center;
+    color: white;
+}
+.headerP{
+    padding: 15px;
+    color: white;
+}
+.LoginAuth > a{
+    color: white;
+    border: 1px solid white;
+    padding: 5px;
+    text-decoration: none;
+}
