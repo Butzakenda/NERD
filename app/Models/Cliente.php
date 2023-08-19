@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cliente extends Model
 {
-    protected $fillable = ['IdDepartamento', 'IdCiudad', 'Documento', 'tipoDocumento', 'Nombres', 'Apellidos', 'CorreoELectronico', 'Telefono', 'SolicitudAlianza', 'FechaNacimiento','Foto'];
+    protected $fillable = ['IdDepartamento', 'IdCiudad', 'Documento', 'tipoDocumento', 'Nombres', 'Apellidos', 'CorreoELectronico', 'Telefono', 'SolicitudAlianza', 'FechaNacimiento','Foto','user_id'];
     protected $primaryKey = 'IdCliente';
     public function departamento()
     {
@@ -20,6 +20,10 @@ class Cliente extends Model
     public function facturas()
     {
         return $this->hasMany(Factura::class);
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }
 

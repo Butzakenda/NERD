@@ -33,12 +33,9 @@
                                         </p>
                                     </div>
                                     <div class="col-3">
-                                        @foreach ($productos as $producto)
-                                            @foreach ($producto->facturas as $factura)
+                                        
+                                                <img align="left" src="{{ asset('img/penguin.png') }}" alt="User Image" class="img-fluid" style="width=30">
                                             
-                                                <img align="left" src="{{ asset($factura->cliente->Foto) }}" alt="User Image" class="img-fluid" style="width=30">
-                                            @endforeach
-                                        @endforeach
                                         
                                     </div>
                                 </div>

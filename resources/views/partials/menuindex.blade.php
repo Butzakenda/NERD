@@ -7,7 +7,13 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="inicio">Inicio</a>
+            
+            @if (Route::has('login'))
+                      
+                <a class="nav-link active" aria-current="page" href="{{route('sesion.index')}}">Inicio</a>     
+            @else
+                <a class="nav-link active" aria-current="page" href="inicio">Inicio</a>
+            @endif
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Nosotros</a>
@@ -29,19 +35,7 @@
           <li class="nav-item">
             <ul class="navbar-nav ms-auto">
               <!-- Authentication Links -->
-              @guest
-                  @if (Route::has('login'))
-                      <li class="nav-item">
-                          <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                      </li>
-                  @endif
-
-                  @if (Route::has('register'))
-                      <li class="nav-item">
-                          <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                      </li>
-                  @endif
-              @else
+              @auth
                   <li class="nav-item dropdown">
                       <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                           {{ Auth::user()->name }}
@@ -60,7 +54,7 @@
                           </form>
                       </div>
                   </li>
-              @endguest
+              @endauth
           </ul>
           </li>
         </ul>
@@ -73,7 +67,7 @@
         @if (Route::has('login'))
             <div class="LoginAuth sm:fixed sm:top-0 sm:right-0 p-6 text-right z-10">
                 @auth
-                    <a href="{{ url('/home') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Home</a>
+                    <a href="{{ url('/session') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Área de Trabajo</a>
                 @else
                     <a href="{{ route('login.index') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Log in</a>
                     @if (Route::has('register'))

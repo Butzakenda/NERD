@@ -96,37 +96,43 @@ class RegisterController extends Controller
      */
     protected function create(Request $request)
     {   
-        
-        /* dd($request); */
         App::setLocale('es');
         $validator = $this->validator($request->all());
-        
-        /* dd($validator->errors()); */
+        /* dd($request); */
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
-        }
+        } else {
 
-        // Crear el cliente y el usuario
-        Cliente::create([
-            // Campos de cliente aquí
-                'IdDepartamento' => $request ['departamentoClienteInput'],
-                'IdCiudad' => $request ['ciudadClienteInput'],
-                'Documento' => $request ['numDocumentoClienteInput'],
-                'tipoDocumento' => $request ['tipoDocumentoClienteInput'],
-                'Nombres' => $request ['NombresClienteInput'],
-                'Apellidos' => $request ['ApellidosClienteInput'],
-                'CorreoELectronico' => $request ['CorreoElectronicoClienteInput'],
-                'telefono' => $request ['telefonoClienteInput'],
-                'FechaNacimiento' => $request ['FechaNacimientoClienteInput']
-        ]);
-        User::create([
-            // Campos de usuario aquí
+            $user = User::create([
                 'name' => $request['NombresClienteInput'],
                 'email' => $request['CorreoElectronicoClienteInput'],
                 'password' => Hash::make($request['ContrasenaClienteInput']),
-        ]);
+            ]);
+            
+            Cliente::create([
+                
+                'IdDepartamento' => $request['departamentoClienteInput'],
+                'IdCiudad' => $request['ciudadClienteInput'],
+                'Documento' => $request['numDocumentoClienteInput'],
+                'tipoDocumento' => $request['tipoDocumentoClienteInput'],
+                'Nombres' => $request['NombresClienteInput'],
+                'Apellidos' => $request['ApellidosClienteInput'],
+                'CorreoELectronico' => $request['CorreoElectronicoClienteInput'],
+                'telefono' => $request['telefonoClienteInput'],
+                'FechaNacimiento' => $request['FechaNacimientoClienteInput'],
+                
+                'user_id' => $user->id, // Asignar el ID del usuario al campo user_id
+            ]);
+        }
 
-        return view('auth.login'); // O redirige a la página que desees
+        // Crear el usuario
+        
+
+        // Crear el cliente y asignarle el ID del usuario creado
+        
+
+        return view('auth.login'); 
     }
+
 }
     

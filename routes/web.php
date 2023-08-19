@@ -27,6 +27,10 @@ Route::get('inicio', function () {
     /* dd($productoChunks); */
     return view('inicio');
 });
+Route::get('session', function () {
+    /* dd($productoChunks); */
+    return view('session');
+});
 
 Route::get('/',function (){
     $productos = Producto::orderBy('IdColaborador', 'desc')->with('colaborador')->get();
@@ -54,15 +58,21 @@ Route::get('/',function (){
                     ->orderBy('colaboradores.Apellidos', 'ASC')
                     ->get();
                  */
-    $cliente = Cliente::OrderBy('IdCliente','ASC')->get();
+    
     /* dd($productos); */
     /* dd(count($productos)); */
     $productoChunks = $productos->chunk(4);
     /* dd($productoChunks); */
-    return view('inicio', compact('productos','productoChunks','cliente'));
+    return view('inicio', compact('productos','productoChunks'));
 });
 
 Route::get('login/departamentos','departamentosController@index')->name('departamentos.index');
+Route::get('session/cliente','ClienteController@index')->name('cliente.index');
+Route::put('cliente/update/{id}','ClienteController@update')->name('cliente.update');
+Route::get('cliente/edit/{id}','ClienteController@edit')->name('cliente.edit');
+Route::get('session/index','SessionController@index')->name('sesion.index');
+
+
 
 /* Route::view('/inicio', 'inicio')->name('inicio'); */
 

@@ -33,7 +33,7 @@
             <!-- Email input -->
             <div class="form-outline mb-4">
               <input type="email" id="email" name="email" class="form-control form-control-lg"
-                placeholder="Enter a valid email address" />
+                placeholder="Ingrese su correo electrónico" />
               <label class="form-label" for="form3Example3">Correo Electrónico</label>
             </div>
   
