@@ -28,7 +28,7 @@ Route::get('inicio', function () {
     return view('inicio');
 });
 
-Route::get('inicio',function (){
+Route::get('/',function (){
     $productos = Producto::orderBy('IdColaborador', 'desc')->with('colaborador')->get();
     /* $ciudades = DB::table('departamentos')
                     ->join('ciudades','ciudades.iddepartamento','=','departamentos.iddepartamento')
