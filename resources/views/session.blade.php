@@ -43,44 +43,16 @@
             <li><a href="">Solicitar Alianza</a></li>
             <li><a href="#">Desactivar cuenta</a></li>
             <li><a href="#">Registro de actividad</a></li>
+            <li><a href=" {{route('cliente.changePasswordForm')}} ">Cambiar contraseña</a></li>
           </ul>
         </div>
-      </nav>
-      
-        
-        
+      </nav> 
         <!-- Page Content -->
         <div id="content" class="p-4">
           @yield('contenidoAT')
         </div>
       </div>
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-      
-  
-      <!-- Ventana Modal -->
-      <div class="modal" id="myModal">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <!-- Encabezado de la modal -->
-            <div class="modal-header">
-              <h5 class="modal-title">Mi Ventana Modal</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-            </div>
-            
-            <!-- Contenido de la modal -->
-            <div class="modal-body">
-              
-      
-            </div>
-            
-            <!-- Pie de página de la modal -->
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-              <button type="button" class="btn btn-primary">Guardar</button>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
 </div>
 </body>

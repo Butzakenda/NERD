@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use App\Models\Cliente;
 use App\Models\Producto;
 use App\Models\User;
@@ -84,9 +85,34 @@ class ClienteController extends Controller
         /* dd($cliente); */
         return redirect()->back();
     }
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required',
+            'new_password' => 'required|string|min:8|confirmed',
+        ]);
+
+        $user = Auth::user();
+
+        if (Hash::check($request->current_password, $user->password)) {
+            $user->update([
+                'password' => Hash::make($request->new_password),
+            ]);
+
+            return redirect()->route('cliente.changePasswordForm')->with('success', 'Contraseña actualizada correctamente.');
+        } else {
+            return redirect()->route('cliente.changePasswordForm')->with('error', 'La contraseña actual no coincide.');
+        }
+    }
     /**
      * Remove the specified resource from storage.
      */
+
+    public function showChangePasswordForm()
+    {
+        //
+        return view('cliente.change-password');
+    }
     public function destroy(string $id)
     {
         //

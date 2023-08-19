@@ -71,7 +71,9 @@ Route::get('session/cliente','ClienteController@index')->name('cliente.index');
 Route::put('cliente/update/{id}','ClienteController@update')->name('cliente.update');
 Route::get('cliente/edit/{id}','ClienteController@edit')->name('cliente.edit');
 Route::get('session/index','SessionController@index')->name('sesion.index');
-
+//Cambiar contraseña
+Route::get('/change-password', 'ClienteController@showChangePasswordForm')->name('cliente.changePasswordForm');
+Route::post('/update-password', 'ClienteController@updatePassword')->name('cliente.updatePassword');
 
 
 /* Route::view('/inicio', 'inicio')->name('inicio'); */
