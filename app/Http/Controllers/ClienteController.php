@@ -7,6 +7,8 @@ use App\Models\Cliente;
 use App\Models\Producto;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Mail\SolicitarAlianza;
+use Illuminate\Support\Facades\Mail;
 
 class ClienteController extends Controller
 {
@@ -19,6 +21,23 @@ class ClienteController extends Controller
         $cliente = Cliente::where('user_id', auth()->id())->first();
         /* dd($cliente); */
         return view('session');
+    }
+    public function solicitarAlianzaForm()
+    {
+        $clienteSA = Auth::user()->cliente;
+        $descripcion = '';
+        /* dd($clienteSA); */
+        return view('session', ['mostrar_formulario' => true],  compact('clienteSA','descripcion'));
+    }
+    
+    
+    public function enviarSolicitudAlianza(Request $request)
+    {
+        $clienteSA = Auth::user()->cliente; // Acceder a la relación cliente
+        $descripcion = $request->input('descripcion');
+    
+        Mail::to('butzakenda@gmail.com')->send(new SolicitarAlianza($clienteSA, $descripcion));
+        return back();
     }
 
     /**

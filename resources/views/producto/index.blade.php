@@ -28,12 +28,12 @@
                                     <p>
                                         {{ $producto->Nombre }}
                                     </p>
-                                    {{-- <p>
+                                    <p>
                                         @if ($producto->colaborador->departamento)
-                                            {{ $producto->colaborador->departamento->Nombre }}
+                                            Ubicación: {{$producto->colaborador->ciudad->Nombre}} , {{ $producto->colaborador->departamento->Nombre }}
                                         @endif
 
-                                    </p> --}}
+                                    </p>
                                 </div>  
                             </div>
                             <div class="row">

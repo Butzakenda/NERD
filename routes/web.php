@@ -31,6 +31,10 @@ Route::get('session', function () {
     /* dd($productoChunks); */
     return view('session');
 });
+Route::get('emails/solicitarAlianza', function () {
+    /* dd($productoChunks); */
+    return view('emails/solicitarAlianza');
+});
 
 Route::get('/',function (){
     $productos = Producto::orderBy('IdColaborador', 'desc')->with('colaborador')->get();
@@ -49,7 +53,11 @@ Route::get('/change-password', 'ClienteController@showChangePasswordForm')->name
 Route::post('/update-password', 'ClienteController@updatePassword')->name('cliente.updatePassword');
 //Producto
 Route::get('session/productos','ProductosController@index')->name('productos.index');
-
+//Buscar
+Route::get('/buscar', 'ProductosController@buscar')->name('buscar');
+//Solicitar ALianza
+Route::get('/solicitar-alianza', 'ClienteController@solicitarAlianzaForm')->name('cliente.solicitarAlianzaForm');
+Route::post('/enviar-solicitud-alianza', 'ClienteController@enviarSolicitudAlianza')->name('cliente.enviarSolicitudAlianza');
 
 /* Route::view('/inicio', 'inicio')->name('inicio'); */
 

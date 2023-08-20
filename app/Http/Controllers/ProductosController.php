@@ -25,6 +25,23 @@ class ProductosController extends Controller
         return view('producto.index', compact('productos','productoChunks'));
         //return view('producto.index');
     }
+    public function buscar(Request $request)
+    {
+        $busqueda = $request->input('buscar');
+
+        $resultados = Producto::where('Nombre', 'LIKE', "%$busqueda%")
+                                ->orWhereHas('colaborador.ciudad', function ($query) use ($busqueda) {
+                                    $query->where('Nombre', 'LIKE', "%$busqueda%");
+                                })
+                                ->orWhereHas('colaborador.departamento', function ($query) use ($busqueda) {
+                                    $query->where('Nombre', 'LIKE', "%$busqueda%");
+                                })
+                                ->orWhere('Descripcion', 'LIKE', "%$busqueda%")
+                                ->paginate(5)
+                                ->appends(['buscar' => $busqueda]);
+        
+        return view('producto.resultados', compact('resultados', 'busqueda'));
+    }
 
     /**
      * Show the form for creating a new resource.

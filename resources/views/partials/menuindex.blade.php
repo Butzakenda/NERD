@@ -58,10 +58,15 @@
           </ul>
           </li>
         </ul>
-        <form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Buscar">
-          <button style="color: white; boder:1px solid white" class="btn btn-outline-success" type="submit">Buscar</button>
-        </form>
+        {{-- {{dd(Request::is('sesion.index') || Request::is('productos.index'))}} --}}
+        {{-- @if (Request::is('sesion.index') || Request::is('productos.index')) --}}
+            <form class="d-flex" role="search" method="GET" action="{{ route('buscar') }}">
+                <input name="buscar" class="form-control me-2" type="search" placeholder="Buscar" aria-label="Buscar" value="{{ $busqueda ?? '' }}">
+                <button style="color: white; border: 1px solid white" class="btn btn-outline-success" type="submit">Buscar</button>
+            </form>
+        {{-- @endif --}}
+
+          
       </div>
       <div class="ContainerLoginAuth">
         @if (Route::has('login'))

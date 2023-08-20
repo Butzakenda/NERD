@@ -44,11 +44,16 @@
             <li><a href="#">Desactivar cuenta</a></li>
             <li><a href="#">Registro de actividad</a></li>
             <li><a href=" {{route('cliente.changePasswordForm')}} ">Cambiar contraseña</a></li>
+            <li><a href="{{route('cliente.solicitarAlianzaForm')}}">Solicitar Alianza</a></li>
           </ul>
         </div>
       </nav> 
         <!-- Page Content -->
         <div id="content" class="p-4">
+          @if(isset($mostrar_formulario) && $mostrar_formulario)
+            @include('emails/solicitarAlianza')
+          @endif
+          
           @yield('contenidoAT')
         </div>
       </div>
