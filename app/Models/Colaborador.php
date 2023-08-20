@@ -12,11 +12,11 @@ class Colaborador extends Model
     protected $primaryKey = 'IdColaborador';
     public function departamento()
     {
-        return $this->belongsTo(Departamento::class, 'IdDepartamento');
+        return $this->belongsTo(Departamentos::class, 'IdDepartamento');
     }
 
     public function ciudad()
     {
-        return $this->belongsTo(Ciudad::class, 'IdCiudad');
+        return $this->belongsTo(Ciudades::class, 'IdCiudad');
     }
 }

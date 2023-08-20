@@ -34,33 +34,6 @@ Route::get('session', function () {
 
 Route::get('/',function (){
     $productos = Producto::orderBy('IdColaborador', 'desc')->with('colaborador')->get();
-    /* $ciudades = DB::table('departamentos')
-                    ->join('ciudades','ciudades.iddepartamento','=','departamentos.iddepartamento')
-                    ->select('ciudades.idciudad','departamentos.iddepartamento','departamentos.nombre as dep','ciudades.nombre')
-                    ->orderby('departamentos.nombre','ASC') 
-                    ->orderby('ciudades.nombre','ASC')    
-                    ->get(); */
-   /*  $productos = DB::table('productos')
-                    ->join('colaboradores', 'colaboradores.IdColaborador', '=', 'productos.IdColaborador')
-                    ->join('facturas', 'facturas.IdProducto', '=', 'productos.IdProducto')
-                    ->join('clientes', 'clientes.IdCliente', '=', 'facturas.IdCliente')
-                    ->select(
-                        'colaboradores.IdColaborador',
-                        'colaboradores.Nombres as NombreColaborador',
-                        'colaboradores.Apellidos as ApellidoColaborador',
-                        'facturas.IdFactura',
-                        'clientes.IdCliente',
-                        'clientes.Nombres as NombreCliente',
-                        'clientes.Apellidos as ApellidoCliente',
-                        'clientes.Foto as ClienteFoto'
-                    )
-                    ->orderBy('colaboradores.Nombres', 'ASC')
-                    ->orderBy('colaboradores.Apellidos', 'ASC')
-                    ->get();
-                 */
-    
-    /* dd($productos); */
-    /* dd(count($productos)); */
     $productoChunks = $productos->chunk(4);
     /* dd($productoChunks); */
     return view('inicio', compact('productos','productoChunks'));
@@ -74,6 +47,8 @@ Route::get('session/index','SessionController@index')->name('sesion.index');
 //Cambiar contraseña
 Route::get('/change-password', 'ClienteController@showChangePasswordForm')->name('cliente.changePasswordForm');
 Route::post('/update-password', 'ClienteController@updatePassword')->name('cliente.updatePassword');
+//Producto
+Route::get('session/productos','ProductosController@index')->name('productos.index');
 
 
 /* Route::view('/inicio', 'inicio')->name('inicio'); */

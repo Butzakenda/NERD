@@ -12,5 +12,8 @@ class Departamentos extends Model
     {
         return $this->belongsTo(Ciudades::class, 'IdCiudad');
     }
-
+    public function colaborador()
+    {
+        return $this->hasMany(Colaborador::class, 'IdColaborador');
+    }
 }

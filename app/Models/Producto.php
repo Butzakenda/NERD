@@ -25,7 +25,7 @@ class Producto extends Model
 
     public function departamentos()
     {
-        return $this->belongsTo(Departamento::class, 'IdDepartamento');
+        return $this->belongsTo(Departamentos::class, 'IdDepartamento');
     }
 
     public function ciudades()

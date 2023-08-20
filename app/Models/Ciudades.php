@@ -10,6 +10,6 @@ class Ciudades extends Model
     protected $primaryKey = 'IdCiudad';
     public function departamento()
     {
-        return $this->belongsTo(Departamento::class, 'IdDepartamento');
+        return $this->belongsTo(Departamentos::class, 'IdDepartamento');
     }
 }
