@@ -1,3 +1,7 @@
+{{-- Esta vista es la que se muestra cuando el usuario se ha autenticado y selecciona la opción 
+     de cambiar contraseña en el área de trabajo 
+     El formulario apunta al método updatePassword en el controlador ClienteController
+     --}}
 @extends('session')
 
 @section('contenidoAT')

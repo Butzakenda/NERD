@@ -1,3 +1,10 @@
+{{-- Esta vista es la que se muestra cuando el usuario se ha autenticado y selecciona la opción 
+     de actualizar datos en el área de trabajo 
+     La variable proviene del controlador ClienteController
+     El formulario apunta al método update en el controlador ClienteController y se apoya del método
+     edit, también de ClienteController
+     --}}
+
 @extends('session')
 
 @section('contenidoAT')

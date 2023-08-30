@@ -26,8 +26,6 @@
                                     <div class="row" >
                                         <div class="col-3 ">
                                             <img align="left" src="{{ asset('img/user.png') }}" alt="User Image" class="img-fluid" style="width=30">
-                                            
-                                                
                                         </div>
                                         <div class="col-6">
                                             <p style="display: flex;"> 
@@ -35,10 +33,7 @@
                                             </p>
                                         </div>
                                         <div class="col-3">
-                                            
-                                                    <img align="left" src="{{ asset('img/penguin.png') }}" alt="User Image" class="img-fluid" style="width=30">
-                                                
-                                            
+                                            <img align="left" src="{{ asset($producto->colaborador->Foto) }}" alt="User Image" class="img-fluid" style="width=30">
                                         </div>
                                     </div>
                                     <div class="row" style="">

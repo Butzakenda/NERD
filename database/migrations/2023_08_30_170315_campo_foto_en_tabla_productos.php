@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         //
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('tipo')->after('email')->default('Cliente');
+        Schema::table('productos', function (Blueprint $table) {
+            
+            $table->string('Foto')->after('Descripcion');
         });
-        
     }
     
 
@@ -25,8 +25,8 @@ return new class extends Migration
     public function down(): void
     {
         //
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('tipo');
+        Schema::table('productos', function (Blueprint $table) {
+            $table->dropColumn('Foto');
         });
     }
 };

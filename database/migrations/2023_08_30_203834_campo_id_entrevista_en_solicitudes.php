@@ -12,12 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         //
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('tipo')->after('email')->default('Cliente');
+        Schema::table('solicitudes', function (Blueprint $table) {
+            $table->unsignedBigInteger('IdEntrevista')->after('IdCliente');
+            $table->unsignedBigInteger('IdAdministrador')->after('IdEntrevista');
         });
-        
     }
-    
 
     /**
      * Reverse the migrations.
@@ -25,8 +24,9 @@ return new class extends Migration
     public function down(): void
     {
         //
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('tipo');
+        Schema::table('solicitudes', function (Blueprint $table) {
+            $table->dropColumn('IdEntrevista');
+            $table->dropColumn('IdAdministrador');
         });
     }
 };

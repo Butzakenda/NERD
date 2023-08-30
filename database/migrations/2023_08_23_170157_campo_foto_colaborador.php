@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         //
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('tipo')->after('email')->default('Cliente');
+        Schema::table('colaboradores', function (Blueprint $table) {
+            $defaultImagePath = 'img/user.png'; 
+            $table->string('Foto')->default($defaultImagePath)->after('FechaNacimiento');
         });
-        
     }
     
 
@@ -25,8 +25,8 @@ return new class extends Migration
     public function down(): void
     {
         //
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('tipo');
+        Schema::table('colaboradores', function (Blueprint $table) {
+            $table->dropColumn('Foto');
         });
     }
 };

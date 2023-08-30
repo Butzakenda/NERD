@@ -48,6 +48,8 @@ Route::get('session/cliente','ClienteController@index')->name('cliente.index');
 Route::put('cliente/update/{id}','ClienteController@update')->name('cliente.update');
 Route::get('cliente/edit/{id}','ClienteController@edit')->name('cliente.edit');
 Route::get('session/index','SessionController@index')->name('sesion.index');
+Route::post('/crear-solicitud-alianza', 'SolicitudesController@create')->name('cliente.crearSolicitudAlianza');
+
 //Cambiar contraseña
 Route::get('/change-password', 'ClienteController@showChangePasswordForm')->name('cliente.changePasswordForm');
 Route::post('/update-password', 'ClienteController@updatePassword')->name('cliente.updatePassword');
@@ -57,10 +59,15 @@ Route::get('session/productos','ProductosController@index')->name('productos.ind
 Route::get('/buscar', 'ProductosController@buscar')->name('buscar');
 //Solicitar ALianza
 Route::get('/solicitar-alianza', 'ClienteController@solicitarAlianzaForm')->name('cliente.solicitarAlianzaForm');
+
 Route::post('/enviar-solicitud-alianza', 'ClienteController@enviarSolicitudAlianza')->name('cliente.enviarSolicitudAlianza');
 
 /* Route::view('/inicio', 'inicio')->name('inicio'); */
 
+/* Administrador */
+Route::get('/crear-colaborador','ColaboradorController@showCrearColaboradorForm')->name('administrador.create');
+
+/* -------------- */
 Auth::routes();
 
 Route::middleware(['web'])->group(function () {

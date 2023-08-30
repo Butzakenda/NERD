@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\Cliente;
 use App\Models\Producto;
 use App\Models\User;
+use App\Models\Solicitud;
 use Illuminate\Http\Request;
 use App\Mail\SolicitarAlianza;
 use Illuminate\Support\Facades\Mail;
@@ -27,7 +28,7 @@ class ClienteController extends Controller
         $clienteSA = Auth::user()->cliente;
         $descripcion = '';
         /* dd($clienteSA); */
-        return view('session', ['mostrar_formulario' => true],  compact('clienteSA','descripcion'));
+        return view('cliente.solicitarAlianzaForm', ['mostrar_formulario' => true],  compact('clienteSA','descripcion'));
     }
     
     
@@ -40,6 +41,7 @@ class ClienteController extends Controller
         return back();
     }
 
+    
     /**
      * Show the form for creating a new resource.
      */

@@ -38,9 +38,16 @@
       <nav id="sidebar" class="bg-light">
         <div class="p-4">
           <ul class="list-unstyled">
+            @if(Auth::user()->tipo == 'Administrador')
+              <p>Aquí está el admin</p>
+              <li><a href="{{route('administrador.create')}}">Crear Nuevo Colaborador</a></li>
+              <li><a href="">Dashboard</a></li>
+              <li><a href="">Solicitudes</a></li>
+            @endif
+
+             {{-- {{dd(->Administrador );}} --}}
             <h2> {{ Auth::user()->tipo }} </h2>
             <li><a href="{{route('cliente.edit', Auth::user()->id)}}">Actualizar perfil</a></li>
-            <li><a href="">Solicitar Alianza</a></li>
             <li><a href="#">Desactivar cuenta</a></li>
             <li><a href="#">Registro de actividad</a></li>
             <li><a href=" {{route('cliente.changePasswordForm')}} ">Cambiar contraseña</a></li>
@@ -50,9 +57,9 @@
       </nav> 
         <!-- Page Content -->
         <div id="content" class="p-4">
-          @if(isset($mostrar_formulario) && $mostrar_formulario)
+          {{-- @if(isset($mostrar_formulario) && $mostrar_formulario)
             @include('emails/solicitarAlianza')
-          @endif
+          @endif --}}
           
           @yield('contenidoAT')
         </div>

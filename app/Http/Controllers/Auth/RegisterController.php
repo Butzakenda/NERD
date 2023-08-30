@@ -102,7 +102,6 @@ class RegisterController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         } else {
-
             $user = User::create([
                 'name' => $request['NombresClienteInput'],
                 'email' => $request['CorreoElectronicoClienteInput'],

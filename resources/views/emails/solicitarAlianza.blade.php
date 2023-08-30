@@ -1,4 +1,6 @@
-
+{{-- Esta vista es uno de los métodos para enviar las solicitudes de alianza, pero por correo electrónico
+     sin embargo, como se ha creado la tabla solicitudes, esta vista es inncesaria, por otro lado,
+     el mailer es funcional y se conservará en caso de que se necesite en el futuro--}}
     <form action="{{route('cliente.enviarSolicitudAlianza')}}" method="post">
         @csrf
         <h1>Solicitud de Alianza</h1>

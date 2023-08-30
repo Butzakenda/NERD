@@ -12,12 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         //
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('tipo')->after('email')->default('Cliente');
+        Schema::create('Entrevistas', function (Blueprint $table) {
+            $table->id('IdEntrevista');
+            $table->unsignedBigInteger('IdAdministrador');
+            $table->string('Entrevistador', 100);
+            $table->date('Fecha');
+            $table->string('Aval', 200);
+            $table->timestamps();
         });
-        
     }
-    
 
     /**
      * Reverse the migrations.
@@ -25,8 +28,6 @@ return new class extends Migration
     public function down(): void
     {
         //
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('tipo');
-        });
+        Schema::dropIfExists('Entrevistas');
     }
 };
