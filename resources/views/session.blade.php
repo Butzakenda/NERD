@@ -34,7 +34,10 @@
 
             </div>
             <div class="col-3">
-                <h2>Bienvenido, {{ Auth::user()->name }}</h2>
+                @auth
+
+                    <h2>Bienvenido, {{ Auth::user()->name }}</h2>
+                @endauth
                 <h3></h3>
             </div>
 
@@ -46,21 +49,31 @@
             <nav id="sidebar" class="bg-light">
                 <div class="p-4">
                     <ul class="list-unstyled">
-                        @if (Auth::user()->tipo == 'Administrador')
-                            <p>Aquí está el admin</p>
-                            <li><a href="">Crear Nuevo Administrador</a></li>
-                            <li><a href="{{ route('administrador.create') }}">Crear Nuevo Colaborador</a></li>
-                            <li><a href="">Dashboard</a></li>
-                            <li><a href=" {{route('solicitudes.show')}} ">Solicitudes</a></li>
-                        @endif
-
+                        @auth
+                            @if (Auth::user()->tipo == 'Administrador')
+                                @auth
+                                    <h2> {{ Auth::user()->tipo }} </h2>
+                                @endauth
+                                <li><a href="">Crear Nuevo Administrador</a></li>
+                                <li><a href="{{ route('administrador.create') }}">Crear Nuevo Colaborador</a></li>
+                                <li><a href="">Dashboard</a></li>
+                                <li><a href=" {{ route('solicitudes.show') }} ">Solicitudes</a></li>
+                            @else
+                                @auth
+                                    <h2> {{ Auth::user()->tipo }} </h2>
+                                @endauth
+                                @auth
+                                    <li><a href="{{ route('cliente.edit', Auth::user()->id) }}">Actualizar perfil</a></li>
+                                @endauth
+                                <li><a href="#">Desactivar cuenta</a></li>
+                                <li><a href="#">Registro de actividad</a></li>
+                                <li><a href=" {{ route('cliente.changePasswordForm') }} ">Cambiar contraseña</a></li>
+                                <li><a href="{{ route('cliente.solicitarAlianzaForm') }}">Solicitar Alianza</a></li>
+                            @endif
+                        @endauth
                         {{-- {{dd(->Administrador );}} --}}
-                        <h2> {{ Auth::user()->tipo }} </h2>
-                        <li><a href="{{ route('cliente.edit', Auth::user()->id) }}">Actualizar perfil</a></li>
-                        <li><a href="#">Desactivar cuenta</a></li>
-                        <li><a href="#">Registro de actividad</a></li>
-                        <li><a href=" {{ route('cliente.changePasswordForm') }} ">Cambiar contraseña</a></li>
-                        <li><a href="{{ route('cliente.solicitarAlianzaForm') }}">Solicitar Alianza</a></li>
+
+
                         <li>
                             @auth
                                 <a class="" href="{{ route('logout') }}"
