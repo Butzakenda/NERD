@@ -9,10 +9,9 @@ class Administrador extends Model
 {
     protected $fillable = ['user_id','Nombres','Apellidos','Correo','Tipo'];
     protected $primaryKey = 'IdAdministrador';
-    
+    protected $table = 'Administradores';
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
-    
 }

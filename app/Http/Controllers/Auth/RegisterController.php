@@ -95,7 +95,7 @@ class RegisterController extends Controller
      * @return \App\Models\Cliente
      */
     protected function create(Request $request)
-    {   
+    {    
         App::setLocale('es');
         $validator = $this->validator($request->all());
         /* dd($request); */

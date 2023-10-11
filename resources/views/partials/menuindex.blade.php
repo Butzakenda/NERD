@@ -33,28 +33,7 @@
             </ul>
           </li>
           <li class="nav-item">
-            <ul class="navbar-nav ms-auto">
-              <!-- Authentication Links -->
-              @auth
-                  <li class="nav-item dropdown">
-                      <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                          {{ Auth::user()->name }}
-                      </a>
-
-                      <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                          @auth
-                              <a class="dropdown-item" href="{{ route('logout') }}"
-                              onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                  {{ __('Logout') }}
-                              </a>
-                          @endauth
-
-                          <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                              @csrf
-                          </form>
-                      </div>
-                  </li>
-              @endauth
+            
           </ul>
           </li>
         </ul>
@@ -68,7 +47,7 @@
 
           
       </div>
-      <div class="ContainerLoginAuth">
+      <div class="ContainerLoginAuth d-flex" >
         @if (Route::has('login'))
             <div class="LoginAuth sm:fixed sm:top-0 sm:right-0 p-6 text-right z-10">
                 @auth
@@ -81,6 +60,9 @@
                 @endauth
             </div>
         @endif
+       
+          <!-- Authentication Links -->
+          
       </div>
         
     </div>

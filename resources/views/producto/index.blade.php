@@ -7,7 +7,7 @@
     <div id="" class="row" >
         <div class="col-12 d-flex">
             <div class="col-2"></div>
-            <div class="col-6 mb-3" style="border: 2px solid black">
+            <div class="col-6 mb-3" styl    e="border: 2px solid black">
                 <a  href="" style="text-decoration: none; color:black" >
                     <div class="col-12 userdescription d-flex flex-row">
                         <div class="row">

@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Solicitud;
 use App\Models\Cliente;
-class SolicitudesController extends Controller
+use App\Models\Administrator;
+use App\Models\Entrevista;
+class AdministradorController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,23 +15,25 @@ class SolicitudesController extends Controller
     public function index()
     {
         //
-        
     }
-    public function create(Request $request){
-        $cliSA = Cliente::where('user_id', auth()->id())->first();
-        
-        Solicitud::create([
-            'Nombre'=>$request['nombreProductoSA'],
-            'Descripcion'=>$request['descripcionProductoSA'],
-            'IdCliente'=>$cliSA->IdCliente,
-            'Fecha'=>now()
-        ]);
-    }
+
     /**
      * Show the form for creating a new resource.
      */
-    
-    
+    public function create()
+    {
+        //
+    }
+    public function showSolicitudes()
+    {
+        //
+        $solicitudes = Solicitud::OrderBy('Fecha','ASC')
+        ->with('Cliente')
+        ->with('administrador')
+        ->get();
+        return view ('Administrador.solicitudes', compact('solicitudes'));
+    }
+
     /**
      * Store a newly created resource in storage.
      */

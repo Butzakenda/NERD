@@ -65,8 +65,13 @@ Route::post('/enviar-solicitud-alianza', 'ClienteController@enviarSolicitudAlian
 /* Route::view('/inicio', 'inicio')->name('inicio'); */
 
 /* Administrador */
-Route::get('/crear-colaborador','ColaboradorController@showCrearColaboradorForm')->name('administrador.create');
+    //Mostrar el formulario para crear un colaborador
+    Route::get('/crear-colaborador','ColaboradorController@showCrearColaboradorForm')->name('administrador.create');
+    //Mostrar las solicitudes
+    Route::get('/show/solictudes','AdministradorController@showSolicitudes')->name('solicitudes.show');
 
+
+/* -------------- */    
 /* -------------- */
 Auth::routes();
 
