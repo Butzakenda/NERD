@@ -42,9 +42,10 @@ Route::get('/',function (){
     /* dd($productoChunks); */
     return view('inicio', compact('productos','productoChunks'));
 });
+//Listar departamentos en la vista auth.register
+    Route::get('login/departamentos','departamentosController@index')->name('departamentos.index');
 
-Route::get('login/departamentos','departamentosController@index')->name('departamentos.index');
-Route::get('session/cliente','ClienteController@index')->name('cliente.index');
+/* Route::get('session/cliente','ClienteController@index')->name('cliente.index'); */
 Route::put('cliente/update/{id}','ClienteController@update')->name('cliente.update');
 Route::get('cliente/edit/{id}','ClienteController@edit')->name('cliente.edit');
 Route::get('session/index','SessionController@index')->name('sesion.index');

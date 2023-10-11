@@ -69,6 +69,10 @@
                                     <td>{{ $solicitud->Fecha }}</td>
                                 </tr>
                                 <tr>
+                                    <td> Estado:</td>
+                                    <td>{{ $solicitud->Estado }}</td>
+                                </tr>
+                                <tr>
                                     <td>Descripción:</td>
                                     <td>{{ $solicitud->Descripcion }}</td>
                                 </tr>
