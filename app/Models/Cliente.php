@@ -6,8 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cliente extends Model
 {
-    protected $fillable = ['IdDepartamento', 'IdCiudad', 'Documento', 'tipoDocumento', 'Nombres', 'Apellidos', 'CorreoELectronico', 'Telefono', 'SolicitudAlianza', 'FechaNacimiento','Foto','user_id'];
+    protected $fillable = ['IdDepartamento', 'IdCiudad', 'Documento', 'tipoDocumento', 'Nombres', 'Apellidos', 'CorreoELectronico', 'Telefono', 'SolicitudAlianza', 'FechaNacimiento', 'Foto', 'user_id'];
     protected $primaryKey = 'IdCliente';
+    protected $table = 'Clientes';
     public function departamento()
     {
         return $this->belongsTo(Departamentos::class, 'IdDepartamento');
@@ -25,5 +26,8 @@ class Cliente extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+    public function solicitudes()
+    {
+        return $this->hasMany(Solicitud::class, 'IdCliente');
+    }
 }
-

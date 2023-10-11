@@ -33,6 +33,13 @@ class AdministradorController extends Controller
         ->get();
         return view ('Administrador.solicitudes', compact('solicitudes'));
     }
+    public function showSolicitudesDetalles(string $id)
+    {
+        $DetalleSolicitud = Cliente::with('departamento', 'ciudad', 'solicitudes')->find($id);
+        $solcitudCliente = Solicitud::where('IdCliente','=',$id);
+        
+        return view ('Administrador.solicitudesDetalle',compact('DetalleSolicitud'));
+    }
 
     /**
      * Store a newly created resource in storage.

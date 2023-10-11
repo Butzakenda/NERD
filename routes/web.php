@@ -69,7 +69,8 @@ Route::post('/enviar-solicitud-alianza', 'ClienteController@enviarSolicitudAlian
     Route::get('/crear-colaborador','ColaboradorController@showCrearColaboradorForm')->name('administrador.create');
     //Mostrar las solicitudes
     Route::get('/show/solictudes','AdministradorController@showSolicitudes')->name('solicitudes.show');
-
+    //Ver los detalles de una solicitud
+    Route::get('/show/solictudes/detalles/{id}','AdministradorController@showSolicitudesDetalles')->name('solicitudes.ver');
 
 /* -------------- */    
 /* -------------- */
