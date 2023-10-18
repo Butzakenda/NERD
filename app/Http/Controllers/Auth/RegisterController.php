@@ -94,8 +94,7 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\Models\Cliente
      */
-    protected function create(Request $request)
-    {    
+    protected function create(Request $request){    
         App::setLocale('es');
         $validator = $this->validator($request->all());
         /* dd($request); */
@@ -107,9 +106,7 @@ class RegisterController extends Controller
                 'email' => $request['CorreoElectronicoClienteInput'],
                 'password' => Hash::make($request['ContrasenaClienteInput']),
             ]);
-            
             Cliente::create([
-                
                 'IdDepartamento' => $request['departamentoClienteInput'],
                 'IdCiudad' => $request['ciudadClienteInput'],
                 'Documento' => $request['numDocumentoClienteInput'],
@@ -119,7 +116,6 @@ class RegisterController extends Controller
                 'CorreoELectronico' => $request['CorreoElectronicoClienteInput'],
                 'telefono' => $request['telefonoClienteInput'],
                 'FechaNacimiento' => $request['FechaNacimientoClienteInput'],
-                
                 'user_id' => $user->id, // Asignar el ID del usuario al campo user_id
             ]);
         }

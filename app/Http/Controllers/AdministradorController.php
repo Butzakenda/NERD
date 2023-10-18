@@ -7,6 +7,7 @@ use App\Models\Solicitud;
 use App\Models\Cliente;
 use App\Models\Administrator;
 use App\Models\Entrevista;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
 class AdministradorController extends Controller
 {
     /**
@@ -40,7 +41,7 @@ class AdministradorController extends Controller
         
         return view ('Administrador.solicitudesDetalle',compact('DetalleSolicitud'));
     }
-
+   
     /**
      * Store a newly created resource in storage.
      */

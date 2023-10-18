@@ -14,6 +14,7 @@ class DepartamentosController extends Controller
     {
         //
         $departamentos = departamentos::OrderBy('IdDepartamento','ASC')->with('Ciudades')->get();
+        
         return view('auth.register', compact('departamentos'));
     }
     public function consultarCiudades($id){

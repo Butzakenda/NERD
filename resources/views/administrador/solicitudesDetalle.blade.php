@@ -81,7 +81,7 @@
                         @endforeach
                     </table>
                     <div class="d-flex">
-                        
+
                         <div class="row">
                             <div class="row">
                                 <h4>
@@ -90,18 +90,22 @@
                             </div>
                             <div class="row">
                                 <div class="col-6">
-                                    <form action="" method="post">
-    
-                                        <p>Matricular producto: </p>
+                                    <form action=" {{route('solicitudes.servicio',$solicitud->IdSolicitud)}} " method="post">
+                                        @csrf
+                                        <p>Matricular producto o servicio: </p>
                                         <button>Matricular</button>
                                     </form>
                                 </div>
                                 <div class="col-6">
-                                    <form action="" method="get">
-    
+                                    @if ($solicitud->Estado == 'En revisión')
                                         <p>Citar a entrevista: </p>
-                                        <button>Agendar</button>
-                                    </form>
+                                        <p>Se requiere un producto o servicio para realizar la entrevista</p>
+                                    @else
+                                        <form action="" method="get">
+                                            <p>Citar a entrevista: </p>
+                                            <button>Agendar</button>
+                                        </form>
+                                    @endif
                                 </div>
                             </div>
                         </div>

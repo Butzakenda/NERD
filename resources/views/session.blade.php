@@ -53,22 +53,22 @@
                             @if (Auth::user()->tipo == 'Administrador')
                                 @auth
                                     <h2> {{ Auth::user()->tipo }} </h2>
+                                    <li><a href="">Crear Nuevo Administrador</a></li>
+                                    <li><a href="{{ route('administrador.create') }}">Crear Nuevo Colaborador</a></li>
+                                    <li><a href="">Dashboard</a></li>
+                                    <li><a href=" {{ route('solicitudes.show') }} ">Solicitudes</a></li>
+                                    
                                 @endauth
-                                <li><a href="">Crear Nuevo Administrador</a></li>
-                                <li><a href="{{ route('administrador.create') }}">Crear Nuevo Colaborador</a></li>
-                                <li><a href="">Dashboard</a></li>
-                                <li><a href=" {{ route('solicitudes.show') }} ">Solicitudes</a></li>
                             @else
                                 @auth
                                     <h2> {{ Auth::user()->tipo }} </h2>
-                                @endauth
-                                @auth
                                     <li><a href="{{ route('cliente.edit', Auth::user()->id) }}">Actualizar perfil</a></li>
+                                    <li><a href="#">Desactivar cuenta</a></li>
+                                    <li><a href="#">Registro de actividad</a></li>
+                                    <li><a href=" {{ route('cliente.changePasswordForm') }} ">Cambiar contraseña</a></li>
+                                    <li><a href="{{ route('cliente.solicitarAlianzaForm') }}">Solicitar Alianza</a></li>
+                                    {{--  --}}
                                 @endauth
-                                <li><a href="#">Desactivar cuenta</a></li>
-                                <li><a href="#">Registro de actividad</a></li>
-                                <li><a href=" {{ route('cliente.changePasswordForm') }} ">Cambiar contraseña</a></li>
-                                <li><a href="{{ route('cliente.solicitarAlianzaForm') }}">Solicitar Alianza</a></li>
                             @endif
                         @endauth
                         {{-- {{dd(->Administrador );}} --}}

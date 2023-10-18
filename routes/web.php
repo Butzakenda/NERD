@@ -72,7 +72,10 @@ Route::post('/enviar-solicitud-alianza', 'ClienteController@enviarSolicitudAlian
     Route::get('/show/solictudes','AdministradorController@showSolicitudes')->name('solicitudes.show');
     //Ver los detalles de una solicitud
     Route::get('/show/solictudes/detalles/{id}','AdministradorController@showSolicitudesDetalles')->name('solicitudes.ver');
-
+    //Cambiar el Estado de una solicitud a Citado a Entrevista
+    Route::post('/show/solictudes/detalles/estado/{id}','SolicitudesController@registerProduct')->name('solicitudes.servicio');
+    
+    
 /* -------------- */    
 /* -------------- */
 Auth::routes();
