@@ -2,6 +2,11 @@
 
 @section('contenidoAT')
     <div class="container-fluid ">
+        @if (session('success_message') && now() <= session('flash_lifetime'))
+            <div class="alert alert-success">
+                {{ session('success_message') }}
+            </div>
+        @endif
         <div class="infoCliente row">
             <div class="d-flex">
                 {{-- {{dd($DetalleSolicitud->solicitudes)}} --}}
@@ -72,11 +77,18 @@
                                     <td> Estado:</td>
                                     <td>{{ $solicitud->Estado }}</td>
                                 </tr>
+
+                                @if ($notificacionesCliente)
+                                    <tr>
+                                        <td> Observaciones:</td>
+                                        <td>{{ $notificacionesCliente->Descripcion }}</td>
+                                    </tr>
+                                @endif
+
                                 <tr>
                                     <td>Descripción:</td>
                                     <td>{{ $solicitud->Descripcion }}</td>
                                 </tr>
-
                             </tbody>
                         @endforeach
                     </table>
@@ -89,24 +101,87 @@
                                 </h4>
                             </div>
                             <div class="row">
-                                <div class="col-6">
-                                    <form action=" {{route('solicitudes.servicio',$solicitud->IdSolicitud)}} " method="post">
-                                        @csrf
-                                        <p>Matricular producto o servicio: </p>
-                                        <button>Matricular</button>
-                                    </form>
+
+                                <div class="col-12">
+                                    <div class="accordion" id="accordionExample">
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="headingOne">
+                                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                                    data-bs-target="#collapseOne" aria-expanded="true"
+                                                    aria-controls="collapseOne">
+                                                    Matricular producto o servicio:
+                                                </button>
+                                            </h2>
+                                            <div id="collapseOne" class="accordion-collapse collapse show"
+                                                aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                                <div class="accordion-body">
+                                                    <form
+                                                        action=" {{ route('solicitudes.servicio', $solicitud->IdSolicitud) }} "
+                                                        method="post">
+                                                        @csrf
+                                                        <p>Tenga en cuenta que para revertir esta acción se requiere enviar
+                                                            un correo: </p>
+                                                        <button>Matricular</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="headingTwo">
+                                                <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#collapseTwo"
+                                                    aria-expanded="false" aria-controls="collapseTwo">
+                                                    Rechazar solicitud:
+                                                </button>
+                                            </h2>
+                                            <div id="collapseTwo" class="accordion-collapse collapse"
+                                                aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                                <div class="accordion-body">
+                                                    @if ($solicitud->Estado == 'Rechazada')
+                                                        <p>Esta solicitud ya ha sido rechazada</p>
+                                                    @else
+                                                        <form
+                                                            action="{{ route('solicitudes.rejected', [$solicitud->IdSolicitud, $DetalleSolicitud->IdCliente]) }}"
+                                                            method="post">
+                                                            @csrf
+                                                            <p>Tipo de solicitud: {{ $solicitud->Tipo }}</p>
+                                                            <p>Describa el motivo de rechazo:</p>
+                                                            <textarea name="motivoRechazo" rows="8" cols="60"></textarea>
+                                                            <br>
+                                                            <button>Rechazar solicitud</button>
+                                                        </form>
+                                                    @endif
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="headingThree">
+                                                <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#collapseThree"
+                                                    aria-expanded="false" aria-controls="collapseThree">
+                                                    Citar a entrevista:
+                                                </button>
+                                            </h2>
+                                            <div id="collapseThree" class="accordion-collapse collapse"
+                                                aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                                                <div class="accordion-body">
+                                                    @if ($solicitud->Estado == 'En revisión')
+                                                        <p>Se requiere un producto o servicio para realizar la entrevista
+                                                        </p>
+                                                    @else
+                                                        <form action="" method="get">
+                                                            <p>Citar a entrevista: </p>
+                                                            <button>Agendar</button>
+                                                        </form>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-6">
-                                    @if ($solicitud->Estado == 'En revisión')
-                                        <p>Citar a entrevista: </p>
-                                        <p>Se requiere un producto o servicio para realizar la entrevista</p>
-                                    @else
-                                        <form action="" method="get">
-                                            <p>Citar a entrevista: </p>
-                                            <button>Agendar</button>
-                                        </form>
-                                    @endif
-                                </div>
+
+
                             </div>
                         </div>
 

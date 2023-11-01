@@ -8,16 +8,6 @@ use App\Models\Departamentos;
 use App\Models\Cliente;
 use App\Models\Factura;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
 
 Route::get('/', function () {
     /* dd($productoChunks); */
@@ -74,7 +64,9 @@ Route::post('/enviar-solicitud-alianza', 'ClienteController@enviarSolicitudAlian
     Route::get('/show/solictudes/detalles/{id}','AdministradorController@showSolicitudesDetalles')->name('solicitudes.ver');
     //Cambiar el Estado de una solicitud a Citado a Entrevista
     Route::post('/show/solictudes/detalles/estado/{id}','SolicitudesController@registerProduct')->name('solicitudes.servicio');
-    
+    //Enviar rechazo de solicitud
+    Route::post('/show/solictudes/detalles/rejected/{id}/{idcliente}','SolicitudesController@solicitudAlianzaRechazada')->name('solicitudes.rejected');
+
     
 /* -------------- */    
 /* -------------- */

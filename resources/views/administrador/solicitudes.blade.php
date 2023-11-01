@@ -14,6 +14,7 @@
                     <th scope="col">Fecha</th>
                 </thead>
                 <tbody>
+                    
                     <tr class="fila-dato">
                         <td scope="row">
                             <p>{{ $solicitud->Tipo }}</p>

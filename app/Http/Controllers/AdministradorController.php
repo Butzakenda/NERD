@@ -7,6 +7,7 @@ use App\Models\Solicitud;
 use App\Models\Cliente;
 use App\Models\Administrator;
 use App\Models\Entrevista;
+use App\Models\Notificaciones;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
 class AdministradorController extends Controller
 {
@@ -36,10 +37,11 @@ class AdministradorController extends Controller
     }
     public function showSolicitudesDetalles(string $id)
     {
+
         $DetalleSolicitud = Cliente::with('departamento', 'ciudad', 'solicitudes')->find($id);
-        $solcitudCliente = Solicitud::where('IdCliente','=',$id);
         
-        return view ('Administrador.solicitudesDetalle',compact('DetalleSolicitud'));
+        $notificacionesCliente = Notificaciones::where('IdCliente',$id)->first();;
+        return view ('Administrador.solicitudesDetalle',compact('DetalleSolicitud','notificacionesCliente'));
     }
    
     /**

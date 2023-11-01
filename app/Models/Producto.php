@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Producto extends Model
 {
     protected $fillable = ['IdInscribirProducto', 'IdDepartamento', 'IdCiudad', 'IdCategoria', 'IdColaborador', 'Nombre', 'Precio', 'Descripcion'];
-
+    protected $primaryKey = 'IdProducto';
+    protected $table = 'productos';
     public function inscribirProducto()
     {
         return $this->belongsTo(InscribirProducto::class, 'IdInscribirProducto');
