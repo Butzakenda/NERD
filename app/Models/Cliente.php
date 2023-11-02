@@ -30,4 +30,8 @@ class Cliente extends Model
     {
         return $this->hasMany(Solicitud::class, 'IdCliente');
     }
+    public function documentos()
+    {
+        return $this->hasMany(Documento::class, 'IdCliente');
+    }
 }
