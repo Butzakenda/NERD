@@ -9,6 +9,7 @@ use App\Models\Administrator;
 use App\Models\Entrevista;
 use App\Models\Notificaciones;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
+
 class AdministradorController extends Controller
 {
     /**
@@ -29,21 +30,41 @@ class AdministradorController extends Controller
     public function showSolicitudes()
     {
         //
-        $solicitudes = Solicitud::OrderBy('Fecha','ASC')
-        ->with('Cliente')
-        ->with('administrador')
-        ->get();
-        return view ('Administrador.solicitudes', compact('solicitudes'));
+        $solicitudes = Solicitud::OrderBy('Fecha', 'ASC')
+            ->with('Cliente')
+            ->with('administrador')
+            ->get();
+        return view('Administrador.solicitudes', compact('solicitudes'));
     }
     public function showSolicitudesDetalles(string $id)
     {
 
         $DetalleSolicitud = Cliente::with('departamento', 'ciudad', 'solicitudes')->find($id);
-        
-        $notificacionesCliente = Notificaciones::where('IdCliente',$id)->first();;
-        return view ('Administrador.solicitudesDetalle',compact('DetalleSolicitud','notificacionesCliente'));
+
+        $notificacionesCliente = Notificaciones::where('IdCliente', $id)->first();;
+        return view('Administrador.solicitudesDetalle', compact('DetalleSolicitud', 'notificacionesCliente'));
     }
-   
+    public function showEntrevistaForm($id)
+    {
+        $InfoClienteEntrevista = Cliente::where('IdCliente', '=', $id)->get();
+        return view('emails.agendarEntrevista', compact('InfoClienteEntrevista'));
+    }
+    public function agendarReunion($idEntrevista)
+    {
+        $EntrevistaInfo = Cliente::where('IdCliente', '=', $idEntrevista)->first();
+        /* dd($EntrevistaInfo); */
+        $InfoClienteEntrevista = [
+            'CorreoELectronico' => $EntrevistaInfo->CorreoELectronico, // Reemplaza esto con el correo real del cliente
+        ];
+
+        $correoElectronico = isset($InfoClienteEntrevista['CorreoELectronico']) ? urlencode($InfoClienteEntrevista['CorreoELectronico']) : '';
+        $tituloEstatico = urlencode('NERD - Entrevista para colaborador');
+
+        $enlace = "https://calendar.google.com/calendar/u/0/r/eventedit?vcon=meet&text={$tituloEstatico}&add={$correoElectronico}";
+
+        // Redirige al enlace
+        return redirect()->away($enlace);
+    }
     /**
      * Store a newly created resource in storage.
      */

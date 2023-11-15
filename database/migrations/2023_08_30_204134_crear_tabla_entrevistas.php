@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('IdAdministrador');
             $table->string('Entrevistador', 100);
             $table->date('Fecha');
-            $table->string('Aval', 200);
+            $table->string('Aval', 200)->nullable();
             $table->timestamps();
         });
     }

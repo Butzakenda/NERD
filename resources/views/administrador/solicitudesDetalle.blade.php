@@ -12,6 +12,16 @@
                 {{ session('error_message') }}
             </div>
         @endif
+        @if (session('reject_success_message') && now() <= session('flash_lifetime'))
+            <div class="alert alert-success">
+                {{ session('reject_success_message') }}
+            </div>
+        @endif
+        @if (session('reject_error_message') && now() <= session('flash_lifetime'))
+            <div class="alert alert-warning">
+                {{ session('reject_error_message') }}
+            </div>
+        @endif
         <div class="infoCliente row">
             <div class="d-flex">
                 {{-- {{dd($DetalleSolicitud->solicitudes)}} --}}
@@ -71,7 +81,7 @@
                                 <tr>
                                     <td>Tipo Solicitud: </td>
                                     <td>
-                                        {{ $solicitud->Tipo }}
+                                        {{ $solicitud->Tipo }} {{$solicitud->IdSolicitud}}
                                     </td>
                                 </tr>
                                 <tr>
@@ -196,12 +206,67 @@
                                                                     entrevista
                                                                 </p>
                                                             @else
-                                                                <form action="" method="get">
+                                                                <form
+                                                                    action="{{ route('solicitudes.entrevista', $DetalleSolicitud->IdCliente) }}"
+                                                                    method="get">
+                                                                    @csrf
                                                                     <p>Citar a entrevista: </p>
                                                                     <button>Agendar</button>
                                                                 </form>
                                                             @endif
                                                         @endif
+                                                    </div>
+                                                </div>
+                                                <div class="accordion-item">
+                                                    <h2 class="accordion-header" id="headingTwo">
+                                                        <button class="accordion-button collapsed" type="button"
+                                                            data-bs-toggle="collapse" data-bs-target="#collapseFour"
+                                                            aria-expanded="false" aria-controls="collapseTwo">
+                                                            Entrevista:
+                                                        </button>
+                                                    </h2>
+                                                    <div id="collapseFour" class="accordion-collapse collapse"
+                                                        aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                                        <div class="accordion-body">
+                                                            @if ($solicitud->Estado == 'Convocado a Entrevista')
+                                                                <p>¿El aspirante aprobó la entrevista?</p>
+                                                                <form action="{{route('solicitudes.EntrevistaAprobada',$DetalleSolicitud->IdCliente)}}" class="form" method="post">
+                                                                    @csrf
+                                                                    <div class="form-group">
+                                                                        <button
+                                                                            class="btn btn-outline-success form-control">Aprobó</button>
+                                                                    </div>
+                                                                </form>
+                                                                <br>
+                                                                <form action="" class="form" method="post">
+                                                                    @csrf
+                                                                    <div class="form-group">
+                                                                        <button
+                                                                            class="btn btn-outline-danger form-control">
+                                                                            No aprobó</button>
+                                                                    </div>
+                                                                </form>
+                                                            @else
+                                                                @if ($solicitud->Estado == 'Convocado a Entrevista')
+                                                                    <p>Ya convocado a entrevista para esta solicitud</p>
+                                                                @else
+                                                                    <form
+                                                                        action="{{ route('solicitudes.rejected', [$solicitud->IdSolicitud, $DetalleSolicitud->IdCliente]) }}"
+                                                                        method="post">
+                                                                        <div class="form-group">
+                                                                            <p>Tipo de solicitud: {{ $solicitud->Tipo }}
+                                                                            </p>
+                                                                            <p>Describa el motivo de rechazo:</p>
+                                                                            <textarea name="motivoRechazo" rows="8" cols="60"></textarea>
+                                                                            <br>
+                                                                            <button>Rechazar solicitud</button>
+                                                                        </div>
+                                                                        @csrf
+                                                                    </form>
+                                                                @endif
+                                                            @endif
+
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
