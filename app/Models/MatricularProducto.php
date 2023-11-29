@@ -16,6 +16,10 @@ class MatricularProducto extends Model
     {
         return $this->belongsTo(Cliente::class, 'IdCliente');
     }
+    public function Colaborador()
+    {
+        return $this->belongsTo(Colaborador::class, 'IdColaborador');
+    }
     public function solicitud()
     {
         return $this->belongsTo(Solicitud::class, 'IdSolicitud');

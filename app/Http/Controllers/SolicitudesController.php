@@ -6,8 +6,10 @@ use Illuminate\Http\Request;
 use App\Models\Solicitud;
 use App\Models\Cliente;
 use App\Models\MatricularProducto;
+use App\Models\SeguimientoProductos;
 use App\Models\Notificaciones;
 use App\Models\Documentos;
+use App\Models\Entrevista;
 use App\Models\RevisarProducto;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use Illuminate\Support\Facades\Auth;
@@ -91,14 +93,14 @@ class SolicitudesController extends Controller
                 $solicitudAlianzaPDF->save($solicitudAlianzaPDFPath);
 
 
-                MatricularProducto::create([
+                SeguimientoProductos::create([
                     'IdAdministrador' => $registerProduct->IdAdministrador,
                     'IdCliente' => $registerProduct->IdCliente,
                     'IdSolicitud' => $registerProduct->IdSolicitud,
                     'CopiaRegistro' => $copiaRegistroPDFPath,
                     'PeticionRevision' => $peticionRevisionPDFPath,
                     'SolicitudAlianza' => $solicitudAlianzaPDFPath,
-                    'Fecha' => now(),
+                    'FechaMatricula' => now(),
                 ]);
                 $registerProduct->update([
                     'Estado' => 'Convocado a Entrevista'
@@ -134,7 +136,7 @@ class SolicitudesController extends Controller
             }
 
             return redirect()->back();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // En caso de error, maneja la excepción y revierte la transacción
             DB::rollBack();
 
@@ -147,11 +149,13 @@ class SolicitudesController extends Controller
         }
     }
 
-    public function EntrevistaAprobada($id)
+    public function EntrevistaAprobada(string $id)
     {
         try {
-            $MatricularProducto = MatricularProducto::with('Cliente', 'administrador')
-                ->where('IdCliente', $id)
+            $ActualizarSolicitud = Solicitud::where('IdSolicitud', $id)->first();
+            /* dd($ActualizarSolicitud); */
+            $MatricularProducto = SeguimientoProductos::with('Cliente', 'administrador')
+                ->where('IdSolicitud', $id)
                 ->latest()
                 ->first();
             /* dd($MatricularProducto ); */
@@ -174,11 +178,27 @@ class SolicitudesController extends Controller
             $avalrevisionPDF = PDF::loadView('administrador.pdfs.avalrevision', ['MatricularProducto' => $MatricularProducto]);
             $avalrevisionPDFPath = $avalDirectory . '/' . $idCliente . '_aval_revision.pdf';
             $avalrevisionPDF->save($avalrevisionPDFPath);
-            RevisarProducto::create([
-                'IdMatricularProducto' => $MatricularProducto->IdMatricularProducto, 
+            //Actualizar el registro en SeguimientoProductos
+            $MatricularProducto->update([
                 'AvalRevision' => $avalrevisionPDFPath, /* Ruta */
-                'Fecha' => now(), /* Actual */
+                'FechaRevision' => now(), /* Actual */
             ]);
+            Documentos::create([
+                'IdCliente' => $MatricularProducto->IdCliente,
+                'tipo' => 'Solicitud de Alianza',
+                'ruta' => $avalrevisionPDFPath,
+                'fechaCarga' => now(),
+            ]);
+            Entrevista::create([
+                'IdAdministrador' => $MatricularProducto->IdAdministrador,
+                'Entrevistador'   => $MatricularProducto->administrador->Nombres . " " . $MatricularProducto->administrador->Apellidos,
+                'Fecha'           => now(),
+                'Aval'            => $avalrevisionPDFPath,
+            ]);
+            $ActualizarSolicitud->update([
+                'Estado' => 'En proceso de contratación'
+            ]);
+
             DB::beginTransaction();
             DB::commit();
             if ($avalrevisionPDF) {
@@ -187,10 +207,10 @@ class SolicitudesController extends Controller
                 session()->put('flash_lifetime', now()->addSeconds(5)); // Establece una duración de 5 minutos
             }
             return redirect()->back();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             DB::rollBack();
 
-            // Agregar lógica para manejar el error (por ejemplo, mostrar un mensaje de error)
+            // Agregar lógica para manejar el error 
             session()->forget('error_message');
             session()->flash('error_message', 'Se produjo un error al procesar la solicitud.');
             session()->put('flash_lifetime', now()->addSeconds(5));
@@ -198,8 +218,39 @@ class SolicitudesController extends Controller
             return redirect()->back();
         }
     }
-    public function EntrevistaDenegada()
+    public function EntrevistaDenegada($id)
     {
+        try {
+            //code...
+            $ActualizarSolicitud = Solicitud::where('IdSolicitud', $id)->first();
+            $MatricularProducto = SeguimientoProductos::with('Cliente', 'administrador')
+                ->where('IdCliente', $id)
+                ->latest()
+                ->first();
+                dd($ActualizarSolicitud);
+            Entrevista::create([
+                'IdAdministrador' => $MatricularProducto->IdAdministrador,
+                'Entrevistador'   => $MatricularProducto->administrador->Nombres . " " . $MatricularProducto->administrador->Apellidos,
+                'Fecha'           => now(),
+                'Aval'            => 'No aprobado'
+            ]);
+            $ActualizarSolicitud->update([
+                'Estado' => 'Entrevista no aprobada'
+            ]);
+            DB::beginTransaction();
+            DB::commit();
+            session()->forget('success_message');
+            session()->flash('success_message', 'Se ha actualizado el estado de la solicitud.');
+            session()->put('flash_lifetime', now()->addSeconds(5));
+            return redirect()->back();
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            session()->forget('error_message');
+            session()->flash('error_message', 'Se produjo un error al procesar la solicitud.');
+            session()->put('flash_lifetime', now()->addSeconds(5));
+            return redirect()->back();
+        }
     }
 
 

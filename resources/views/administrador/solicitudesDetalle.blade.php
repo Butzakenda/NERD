@@ -81,7 +81,7 @@
                                 <tr>
                                     <td>Tipo Solicitud: </td>
                                     <td>
-                                        {{ $solicitud->Tipo }} {{$solicitud->IdSolicitud}}
+                                        {{ $solicitud->Tipo }} {{ $solicitud->IdSolicitud }}
                                     </td>
                                 </tr>
                                 <tr>
@@ -228,24 +228,41 @@
                                                     <div id="collapseFour" class="accordion-collapse collapse"
                                                         aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
                                                         <div class="accordion-body">
+                                                            {{-- @php
+                                                                
+                                                                /* $DetalleSolicitud->solicitudes as $MySolicitud */
+                                                            @endphp
+                                                            @foreach ($DetalleSolicitud->solicitudes as $MySolicitud) {
+                                                                # code...
+                                                            } --}}
+                                                            {{-- {{dd($DetalleSolicitud->solicitudes)}} --}}
+
                                                             @if ($solicitud->Estado == 'Convocado a Entrevista')
-                                                                <p>¿El aspirante aprobó la entrevista?</p>
-                                                                <form action="{{route('solicitudes.EntrevistaAprobada',$DetalleSolicitud->IdCliente)}}" class="form" method="post">
-                                                                    @csrf
-                                                                    <div class="form-group">
-                                                                        <button
-                                                                            class="btn btn-outline-success form-control">Aprobó</button>
-                                                                    </div>
-                                                                </form>
-                                                                <br>
-                                                                <form action="" class="form" method="post">
-                                                                    @csrf
-                                                                    <div class="form-group">
-                                                                        <button
-                                                                            class="btn btn-outline-danger form-control">
-                                                                            No aprobó</button>
-                                                                    </div>
-                                                                </form>
+                                                                @foreach ($DetalleSolicitud->solicitudes as $MySolicitud)
+                                                                    
+                                                                    <p>¿El aspirante aprobó la entrevista?</p>
+                                                                    <form
+                                                                        action="{{ route('solicitudes.EntrevistaAprobada', $MySolicitud->IdSolicitud) }}"
+                                                                        class="form" method="post">
+                                                                        @csrf
+                                                                        
+                                                                        <div class="form-group">
+                                                                            <button
+                                                                                class="btn btn-outline-success form-control">Aprobó</button>
+                                                                        </div>
+                                                                    </form>
+                                                                    <br>
+                                                                    <form
+                                                                        action="{{ route('solicitudes.EntrevistaDenegada', $MySolicitud->IdSolicitud) }}"
+                                                                        class="form" method="post">
+                                                                        @csrf
+                                                                        <div class="form-group">
+                                                                            <button
+                                                                                class="btn btn-outline-danger form-control">No
+                                                                                aprobó</button>
+                                                                        </div>
+                                                                    </form>
+                                                                @endforeach
                                                             @else
                                                                 @if ($solicitud->Estado == 'Convocado a Entrevista')
                                                                     <p>Ya convocado a entrevista para esta solicitud</p>

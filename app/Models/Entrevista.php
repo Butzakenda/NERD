@@ -9,4 +9,5 @@ class Entrevista extends Model
 {
     protected $fillable = ['IdAdministrador','Entrevistador','Fecha','Aval'];
     protected $primaryKey = 'IdEntrevista';
+    protected $table = 'Entrevistas';
 }

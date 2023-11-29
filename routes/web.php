@@ -71,9 +71,9 @@ Route::post('/enviar-solicitud-alianza', 'ClienteController@enviarSolicitudAlian
     //Retornar la pestaña para agendar entrevistas
     Route::get('/show/solictudes/entrevista/agendar/{idEntrevista}','AdministradorController@agendarReunion')->name('solicitudes.agendarReunion');
     //Añadir los campos si se aprueba la entrevista
-    Route::post('/solicitudes/AvalRevisionAprobado{id}','SolicitudesController@EntrevistaAprobada')->name('solicitudes.EntrevistaAprobada');
+    Route::post('/solicitudes/AvalRevisionAprobado/{id}','SolicitudesController@EntrevistaAprobada')->name('solicitudes.EntrevistaAprobada');
     //Añadir los campos si no se aprueba la entrevista
-    Route::post('/solicitudes/AvalRevisionDenegado{id}','SolicitudesController@EntrevistaDenegada')->name('solicitudes.EntrevistaDenegada');
+    Route::post('/solicitudes/AvalRevisionDenegado/{id}','SolicitudesController@EntrevistaDenegada')->name('solicitudes.EntrevistaDenegada');
 
     
 /* -------------- */    
