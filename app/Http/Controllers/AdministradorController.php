@@ -9,6 +9,8 @@ use App\Models\Administrator;
 use App\Models\Entrevista;
 use App\Models\Notificaciones;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 
 class AdministradorController extends Controller
 {
@@ -51,19 +53,38 @@ class AdministradorController extends Controller
     }
     public function agendarReunion($idEntrevista)
     {
-        $EntrevistaInfo = Cliente::where('IdCliente', '=', $idEntrevista)->first();
-        /* dd($EntrevistaInfo); */
-        $InfoClienteEntrevista = [
-            'CorreoELectronico' => $EntrevistaInfo->CorreoELectronico, // Reemplaza esto con el correo real del cliente
-        ];
 
-        $correoElectronico = isset($InfoClienteEntrevista['CorreoELectronico']) ? urlencode($InfoClienteEntrevista['CorreoELectronico']) : '';
-        $tituloEstatico = urlencode('NERD - Entrevista para colaborador');
+        try {
+            $EntrevistaInfo = Cliente::where('IdCliente', '=', $idEntrevista)->first();
 
-        $enlace = "https://calendar.google.com/calendar/u/0/r/eventedit?vcon=meet&text={$tituloEstatico}&add={$correoElectronico}";
+            $solicitud = Solicitud::where('IdCliente', $idEntrevista)->first();
+            /* dd($EntrevistaInfo); */
+            $solicitud->update([
+                'Estado' => 'Entrevista'
+            ]);
+            $InfoClienteEntrevista = [
+                'CorreoELectronico' => $EntrevistaInfo->CorreoELectronico,
+            ];
+            DB::beginTransaction();
+            DB::commit();
+            $correoElectronico = isset($InfoClienteEntrevista['CorreoELectronico']) ? urlencode($InfoClienteEntrevista['CorreoELectronico']) : '';
+            $tituloEstatico = urlencode('NERD - Entrevista para colaborador');
+            $enlace = "https://calendar.google.com/calendar/u/0/r/eventedit?vcon=meet&text={$tituloEstatico}&add={$correoElectronico}";
+            // Redirige al enlace
+            session()->forget('success_message');
+            session()->flash('success_message', '¡Se ha agendado la entrevista!');
+            session()->put('flash_lifetime', now()->addSeconds(5));
+            return redirect()->away($enlace)->withHeaders(['target' => '_blank']);
+            
+        } catch (\Exception $e) {
+            // En caso de error, maneja la excepción y revierte la transacción
+            DB::rollBack();
 
-        // Redirige al enlace
-        return redirect()->away($enlace);
+            session()->forget('error_message');
+            session()->flash('error_message', 'Se produjo un error al procesar la solicitud.');
+            session()->put('flash_lifetime', now()->addSeconds(5));
+            return redirect()->back();
+        }
     }
     /**
      * Store a newly created resource in storage.

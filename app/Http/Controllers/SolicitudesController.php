@@ -268,6 +268,7 @@ class SolicitudesController extends Controller
             'Tipo' => $solicitudCliente->Tipo,
             'Descripcion' => $request->input('motivoRechazo'),
         ]);
+        
         $solicitudCliente->update([
             'Estado' => 'Rechazada',
         ]);
