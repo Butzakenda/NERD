@@ -10,6 +10,7 @@ use App\Models\SeguimientoProductos;
 use App\Models\Notificaciones;
 use App\Models\Documentos;
 use App\Models\Entrevista;
+
 use App\Models\RevisarProducto;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use Illuminate\Support\Facades\Auth;
@@ -30,14 +31,40 @@ class SolicitudesController extends Controller
     }
     public function create(Request $request)
     {
-        $cliSA = Cliente::where('user_id', auth()->id())->first();
+        try {
+            //code...
+            $cliSA = Cliente::where('user_id', auth()->id())->first();
 
-        Solicitud::create([
-            'Nombre' => $request['nombreProductoSA'],
-            'Descripcion' => $request['descripcionProductoSA'],
-            'IdCliente' => $cliSA->IdCliente,
-            'Fecha' => now()
-        ]);
+            Solicitud::create([
+                'Nombre' => $request['nombreProductoSA'],
+                'Descripcion' => $request['descripcionProductoSA'],
+                'IdCliente' => $cliSA->IdCliente,
+                'Fecha' => now()
+            ]);
+            Notificaciones::create([
+                'IdCliente' => $cliSA->IdCliente,
+                'Tipo' => 'Solicitud Alianza',
+                'Descripcion' => 'Recientemente has enviado una solicitud de alianza',
+                'leido' => false,
+                'enlaceRelacionado' => 'Sin enlace',
+            ]);
+            DB::beginTransaction();
+            DB::commit();
+            session()->forget('success_message');
+            session()->flash('success_message', '¡Se ha enviado la solicitud!');
+            session()->put('flash_lifetime', now()->addSeconds(5)); 
+            return redirect()->back();
+        } catch (\Exception $e) {
+            //throw $th
+            DB::rollBack();
+
+            // Agregar lógica para manejar el error 
+            session()->forget('error_message');
+            session()->flash('error_message', 'Se produjo un error al procesar la solicitud.');
+            session()->put('flash_lifetime', now()->addSeconds(5));
+            // Puedes redirigir a una página de error o a donde sea necesario
+            return redirect()->back();
+        }
     }
     public function registerProduct(string $id)
     {
@@ -140,7 +167,7 @@ class SolicitudesController extends Controller
             // En caso de error, maneja la excepción y revierte la transacción
             DB::rollBack();
 
-            // Agregar lógica para manejar el error (por ejemplo, mostrar un mensaje de error)
+            // Agregar lógica para manejar el error 
             session()->forget('error_message');
             session()->flash('error_message', 'Se produjo un error al procesar la solicitud.');
             session()->put('flash_lifetime', now()->addSeconds(5));
@@ -227,7 +254,7 @@ class SolicitudesController extends Controller
                 ->where('IdCliente', $id)
                 ->latest()
                 ->first();
-                dd($ActualizarSolicitud);
+            dd($ActualizarSolicitud);
             Entrevista::create([
                 'IdAdministrador' => $MatricularProducto->IdAdministrador,
                 'Entrevistador'   => $MatricularProducto->administrador->Nombres . " " . $MatricularProducto->administrador->Apellidos,
@@ -268,7 +295,7 @@ class SolicitudesController extends Controller
             'Tipo' => $solicitudCliente->Tipo,
             'Descripcion' => $request->input('motivoRechazo'),
         ]);
-        
+
         $solicitudCliente->update([
             'Estado' => 'Rechazada',
         ]);

@@ -34,22 +34,26 @@ Route::get('/',function (){
 });
 //Listar departamentos en la vista auth.register
     Route::get('login/departamentos','departamentosController@index')->name('departamentos.index');
-
 /* Route::get('session/cliente','ClienteController@index')->name('cliente.index'); */
-Route::put('cliente/update/{id}','ClienteController@update')->name('cliente.update');
-Route::get('cliente/edit/{id}','ClienteController@edit')->name('cliente.edit');
 Route::get('session/index','SessionController@index')->name('sesion.index');
-Route::post('/crear-solicitud-alianza', 'SolicitudesController@create')->name('cliente.crearSolicitudAlianza');
+//Cliente
+    Route::get('session/RegistroActividad/{id}','SessionController@RegistroActividad')->name('sesion.actividad');
+    //Actualizar
+    Route::put('cliente/update/{id}','ClienteController@update')->name('cliente.update');
+    Route::get('cliente/edit/{id}','ClienteController@edit')->name('cliente.edit');
+    Route::post('/crear-solicitud-alianza', 'SolicitudesController@create')->name('cliente.crearSolicitudAlianza');
+    //Cambiar contraseña
+    Route::get('/change-password', 'ClienteController@showChangePasswordForm')->name('cliente.changePasswordForm');
+    Route::post('/update-password', 'ClienteController@updatePassword')->name('cliente.updatePassword');
+    //Solicitar ALianza
+    Route::get('/solicitar-alianza', 'ClienteController@solicitarAlianzaForm')->name('cliente.solicitarAlianzaForm');
+//-----------------
 
-//Cambiar contraseña
-Route::get('/change-password', 'ClienteController@showChangePasswordForm')->name('cliente.changePasswordForm');
-Route::post('/update-password', 'ClienteController@updatePassword')->name('cliente.updatePassword');
 //Producto
 Route::get('session/productos','ProductosController@index')->name('productos.index');
 //Buscar
 Route::get('/buscar', 'ProductosController@buscar')->name('buscar');
-//Solicitar ALianza
-Route::get('/solicitar-alianza', 'ClienteController@solicitarAlianzaForm')->name('cliente.solicitarAlianzaForm');
+
 
 Route::post('/enviar-solicitud-alianza', 'ClienteController@enviarSolicitudAlianza')->name('cliente.enviarSolicitudAlianza');
 

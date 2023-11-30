@@ -22,6 +22,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href=" {{ asset('css/index.css') }} ">
+    <link rel="stylesheet" href=" {{ asset('css/RegistroActividad.css') }} ">
 
 </head>
 
@@ -57,14 +58,15 @@
                                     <li><a href="{{ route('administrador.create') }}">Crear Nuevo Colaborador</a></li>
                                     <li><a href="">Dashboard</a></li>
                                     <li><a href=" {{ route('solicitudes.show') }} ">Solicitudes</a></li>
-                                    
+
                                 @endauth
                             @else
                                 @auth
                                     <h2> {{ Auth::user()->tipo }} </h2>
                                     <li><a href="{{ route('cliente.edit', Auth::user()->id) }}">Actualizar perfil</a></li>
                                     <li><a href="#">Desactivar cuenta</a></li>
-                                    <li><a href="#">Registro de actividad</a></li>
+                                    <li><a href="{{ route('sesion.actividad', Auth::user()->id) }}">Registro de actividad</a>
+                                    </li>
                                     <li><a href=" {{ route('cliente.changePasswordForm') }} ">Cambiar contraseña</a></li>
                                     <li><a href="{{ route('cliente.solicitarAlianzaForm') }}">Solicitar Alianza</a></li>
                                     {{--  --}}
@@ -94,7 +96,11 @@
                 {{-- @if (isset($mostrar_formulario) && $mostrar_formulario)
             @include('emails/solicitarAlianza')
           @endif --}}
-
+                @if (session('error_message') && now() <= session('flash_lifetime'))
+                    <div class="alert alert-warning">
+                        {{ session('error_message') }}
+                    </div>
+                @endif
                 @yield('contenidoAT')
             </div>
         </div>
