@@ -12,16 +12,7 @@
                 {{ session('error_message') }}
             </div>
         @endif
-        @if (session('reject_success_message') && now() <= session('flash_lifetime'))
-            <div class="alert alert-success">
-                {{ session('reject_success_message') }}
-            </div>
-        @endif
-        @if (session('reject_error_message') && now() <= session('flash_lifetime'))
-            <div class="alert alert-warning">
-                {{ session('reject_error_message') }}
-            </div>
-        @endif
+
         <div class="infoCliente row">
             <div class="d-flex">
                 {{-- {{dd($DetalleSolicitud->solicitudes)}} --}}
@@ -84,6 +75,7 @@
                                         {{ $solicitud->Tipo }}
                                     </td>
                                 </tr>
+
                                 <tr>
                                     <td> Fecha:</td>
                                     <td>{{ $solicitud->Fecha }}</td>
@@ -100,6 +92,12 @@
                                         </tr>
                                     @endif
                                 @endif
+                                <tr>
+                                    <td>Nombre producto: </td>
+                                    <td>
+                                        {{ $solicitud->Nombre }}
+                                    </td>
+                                </tr>
                                 <tr>
                                     <td>Descripción:</td>
                                     <td>{{ $solicitud->Descripcion }}</td>
@@ -125,12 +123,12 @@
                                             @include('administrador.EstadoSolicitudes.agendarentrevista')
                                         @elseif ($solicitud->Estado == 'Entrevista no aprobada' || $solicitud->Estado == 'Rechazada')
                                             @include('administrador.EstadoSolicitudes.rechazada')
-                                        @elseif ($solicitud->Estado == 'En proceso de contratación')
-                                            @include('administrador.EstadoSolicitudes.contratacion')
                                         @elseif ($solicitud->Estado == 'Entrevista')
                                             @include('administrador.EstadoSolicitudes.entrevista')
+                                        @elseif ($solicitud->Estado == 'En proceso de contratación')
+                                            @include('administrador.EstadoSolicitudes.contratacion')
                                         @else
-                                            <!-- Puedes agregar un caso por defecto o manejar otro comportamiento si es necesario -->
+                                            <h5>Algo ha salido mal...</h5>
                                         @endif
                                     </div>
                                 </section class="section">
@@ -149,5 +147,4 @@
         </div>
 
     </div>
-    
 @endsection

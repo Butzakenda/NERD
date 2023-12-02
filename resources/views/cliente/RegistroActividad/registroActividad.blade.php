@@ -25,9 +25,12 @@
                                 Descripción: {{ $noti->Descripcion }}
                             </p>
                             <div class="actions">
-                                <a class="read" href="">
-                                    Más detalles
-                                </a>
+                                <form action="{{ route('NotficacionesDetalles',$noti->Tipo) }}" method="get">
+                                    @csrf
+                                    <button type="submit" class="btn btn-primary read">
+                                        Más detalles
+                                    </button>
+                                </form>
                                 <a class="mark-as-read" href="">
                                     Marcar como leído
                                 </a>
@@ -38,4 +41,9 @@
             </div>
         </div>
     @endisset
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+
+
 @endsection

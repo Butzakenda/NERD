@@ -38,14 +38,19 @@ class AdministradorController extends Controller
             ->get();
         return view('Administrador.solicitudes', compact('solicitudes'));
     }
-    public function showSolicitudesDetalles(string $id)
+    public function showSolicitudesDetalles(string $id, $idsolicitud)
     {
+        // Obtener el cliente con la solicitud específica cargada
+        $DetalleSolicitud = Cliente::with(['departamento', 'ciudad', 'solicitudes' => function ($query) use ($idsolicitud) {
+            $query->where('IdSolicitud', $idsolicitud);
+        }])->find($id);
 
-        $DetalleSolicitud = Cliente::with('departamento', 'ciudad', 'solicitudes')->find($id);
+        // Obtener las notificaciones del cliente
+        $notificacionesCliente = Notificaciones::where('IdCliente', $id)->first();
 
-        $notificacionesCliente = Notificaciones::where('IdCliente', $id)->first();;
         return view('Administrador.solicitudesDetalle', compact('DetalleSolicitud', 'notificacionesCliente'));
     }
+
     public function showEntrevistaForm($id)
     {
         $InfoClienteEntrevista = Cliente::where('IdCliente', '=', $id)->get();
@@ -75,7 +80,6 @@ class AdministradorController extends Controller
             session()->flash('success_message', '¡Se ha agendado la entrevista!');
             session()->put('flash_lifetime', now()->addSeconds(5));
             return redirect()->away($enlace)->withHeaders(['target' => '_blank']);
-            
         } catch (\Exception $e) {
             // En caso de error, maneja la excepción y revierte la transacción
             DB::rollBack();

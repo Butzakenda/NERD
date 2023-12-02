@@ -37,6 +37,10 @@ Route::get('/',function (){
 /* Route::get('session/cliente','ClienteController@index')->name('cliente.index'); */
 Route::get('session/index','SessionController@index')->name('sesion.index');
 //Cliente
+    
+    Route::get('session/RegistroActividad/detalles/notificacion-detalles/{noti}', 'SessionController@NotficacionesDetalles')->name('NotficacionesDetalles');
+    Route::post('session/RegistroActividad/detalles/contrato','SessionController@DocumentosContrato')->name('documentos.contrato');
+    Route::get('session/RegistroActividad/detalles','SessionController@RegistroActividadDetalles')->name('sesion.actividadDetalles');
     Route::get('session/RegistroActividad/{id}','SessionController@RegistroActividad')->name('sesion.actividad');
     //Actualizar
     Route::put('cliente/update/{id}','ClienteController@update')->name('cliente.update');
@@ -65,7 +69,7 @@ Route::post('/enviar-solicitud-alianza', 'ClienteController@enviarSolicitudAlian
     //Mostrar las solicitudes
     Route::get('/show/solictudes','AdministradorController@showSolicitudes')->name('solicitudes.show');
     //Ver los detalles de una solicitud
-    Route::get('/show/solictudes/detalles/{id}','AdministradorController@showSolicitudesDetalles')->name('solicitudes.ver');
+    Route::get('/show/solictudes/detalles/{id}/{idsolicitud}','AdministradorController@showSolicitudesDetalles')->name('solicitudes.ver');
     //Cambiar el Estado de una solicitud a Citado a Entrevista
     Route::post('/show/solictudes/detalles/estado/{id}','SolicitudesController@registerProduct')->name('solicitudes.servicio');
     //Enviar rechazo de solicitud
@@ -78,6 +82,9 @@ Route::post('/enviar-solicitud-alianza', 'ClienteController@enviarSolicitudAlian
     Route::post('/solicitudes/AvalRevisionAprobado/{id}','SolicitudesController@EntrevistaAprobada')->name('solicitudes.EntrevistaAprobada');
     //Añadir los campos si no se aprueba la entrevista
     Route::post('/solicitudes/AvalRevisionDenegado/{id}','SolicitudesController@EntrevistaDenegada')->name('solicitudes.EntrevistaDenegada');
+    //Registrar seguimiento de producto 
+    Route::post('/solicitudes/seguimiento/{id}','SolicitudesController@RealizarSeguimiento')->name('Seguimiento');
+
 
     
 /* -------------- */    

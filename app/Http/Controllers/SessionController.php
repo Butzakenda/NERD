@@ -7,6 +7,7 @@ use App\Models\Producto;
 use App\Models\User;
 use App\Models\Notificaciones;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class SessionController extends Controller
 {
@@ -29,11 +30,11 @@ class SessionController extends Controller
             $user = User::find($id);
             $cliente = $user->cliente;
             $notificaciones = Notificaciones::where('IdCliente', $cliente->IdCliente)
-            ->orderBy('IdNotificacion', 'desc')
-            ->get();
+                ->orderBy('IdNotificacion', 'desc')
+                ->get();
 
             //dd($notificaciones);
-            return view('cliente.registroActividad', compact('notificaciones'));
+            return view('cliente.RegistroActividad.registroActividad', compact('notificaciones'));
         } catch (\Exception $e) {
             //throw $th;
             session()->forget('error_message');
@@ -43,6 +44,33 @@ class SessionController extends Controller
             return redirect()->back();
         }
     }
+    public function RegistroActividadDetalles()
+    {
+        return view('cliente.RegistroActividad.Documentacion');
+    }
+    public function DocumentosContrato()
+    {
+        dd("DocumentosContrato");
+    }
+    public function NotficacionesDetalles($noti){
+        
+        try {
+            if ($noti == 'Entrevista Avalada') {
+                $noti = 'EntrevistaAvalada';
+            } elseif ($noti = 'Solicitud Alianza'){
+                $noti = 'SolicitudAlianza';
+            }
+
+            
+            return view ('cliente.RegistroActividad.' . $noti);
+        } catch (\Exception $e) {
+            
+        }
+        
+    }
+    
+
+
     /**
      * Show the form for creating a new resource.
      */

@@ -36,7 +36,7 @@
                             <p>{{ $solicitud->Fecha }}</p>
                         </td>
                         <td scope="row">
-                            <form action="{{ route('solicitudes.ver', $solicitud->cliente->IdCliente) }}" method="get">
+                            <form action="{{ route('solicitudes.ver', [$solicitud->cliente->IdCliente, $solicitud->IdSolicitud]) }}" method="get">
                                 <button class="btn btn-info">Ver</button>
                             </form>
                         </td>

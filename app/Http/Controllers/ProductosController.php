@@ -18,7 +18,7 @@ class ProductosController extends Controller
         //
         $productos = Producto::orderBy('IdColaborador', 'desc')
         ->with('colaborador')
-        ->paginate(5);
+        ->paginate(20);
         /* dd($productos); */
         $productoChunks = $productos->chunk(2);
          /* dd($productoChunks); */

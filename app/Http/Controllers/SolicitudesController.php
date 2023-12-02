@@ -10,6 +10,7 @@ use App\Models\SeguimientoProductos;
 use App\Models\Notificaciones;
 use App\Models\Documentos;
 use App\Models\Entrevista;
+use App\Models\User;
 
 use App\Models\RevisarProducto;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
@@ -52,7 +53,7 @@ class SolicitudesController extends Controller
             DB::commit();
             session()->forget('success_message');
             session()->flash('success_message', '¡Se ha enviado la solicitud!');
-            session()->put('flash_lifetime', now()->addSeconds(5)); 
+            session()->put('flash_lifetime', now()->addSeconds(5));
             return redirect()->back();
         } catch (\Exception $e) {
             //throw $th
@@ -153,6 +154,13 @@ class SolicitudesController extends Controller
                     'ruta' => $solicitudAlianzaPDFPath,
                     'fechaCarga' => now(),
                 ]);
+                Notificaciones::create([
+                    'IdCliente' => $registerProduct->IdCliente,
+                    'IdAdministrador' => $registerProduct->IdAdministrador,
+                    'Tipo' => 'Producto Matriculado',
+                    'Descripcion' => 'Tu producto/servicio ha sido matriculado. Para saber más presiona en Más detalles.',
+                    'enlaceRelacionado' => 'No aplica'
+                ]);
             }
             DB::beginTransaction();
             DB::commit();
@@ -222,6 +230,14 @@ class SolicitudesController extends Controller
                 'Fecha'           => now(),
                 'Aval'            => $avalrevisionPDFPath,
             ]);
+            Notificaciones::create([
+                'IdCliente' => $MatricularProducto->IdCliente,
+                'IdAdministrador' => $MatricularProducto->IdAdministrador,
+                'Tipo' => 'Entrevista Avalada',
+                'Descripcion' => 'La entrevista que presentaste ha sido marcada como Aprobada por un administrador. 
+                Presiona en Más detalles para saber más al respecto.',
+                'enlaceRelacionado' => $avalrevisionPDFPath,
+            ]);
             $ActualizarSolicitud->update([
                 'Estado' => 'En proceso de contratación'
             ]);
@@ -250,16 +266,24 @@ class SolicitudesController extends Controller
         try {
             //code...
             $ActualizarSolicitud = Solicitud::where('IdSolicitud', $id)->first();
+
             $MatricularProducto = SeguimientoProductos::with('Cliente', 'administrador')
                 ->where('IdCliente', $id)
                 ->latest()
                 ->first();
-            dd($ActualizarSolicitud);
+            
             Entrevista::create([
                 'IdAdministrador' => $MatricularProducto->IdAdministrador,
                 'Entrevistador'   => $MatricularProducto->administrador->Nombres . " " . $MatricularProducto->administrador->Apellidos,
                 'Fecha'           => now(),
                 'Aval'            => 'No aprobado'
+            ]);
+            Notificaciones::create([
+                'IdCliente' => $MatricularProducto->Cliente->IdCliente,
+                'IdAdministrador' => $MatricularProducto->IdAdministrador,
+                'Tipo' => 'Entrevista no aprobada',
+                'Descripcion' => 'La entrevista que presentaste ha sido marcada como no aprobada por un administrador. Presiona en Más detalles para saber más al respecto',
+                'enlaceRelacionado' => 'No aplica',
             ]);
             $ActualizarSolicitud->update([
                 'Estado' => 'Entrevista no aprobada'
@@ -280,7 +304,32 @@ class SolicitudesController extends Controller
         }
     }
 
+    public function RealizarSeguimiento(string $id)
+    {
 
+        try {
+            // Obtener la solicitud por su ID
+            $Seguimiento = Solicitud::where('IdSolicitud', $id)->first();
+            // Obtener el administrador actualmente autenticado
+            $admin = User::with(['administrador' => function ($query) {
+                $query->where('IdAdministrador', Auth::user()->id);
+            }])->first();
+            
+            // Verificar si se encontró un administrador antes de intentar acceder a su ID
+            if ($admin && $admin->administrador) {
+                // Actualizar la solicitud asignando el ID del administrador
+                $Seguimiento->update([
+                    'IdAdministrador' => $admin->administrador->IdAdministrador,
+                ]);
+            }
+            return redirect()->back();
+        } catch (\Exception $e) {
+            // Manejo de errores
+            dd($e->getMessage());
+            return redirect()->back();
+        }
+        
+    }
     /**
      * Show the form for creating a new resource.
      */
