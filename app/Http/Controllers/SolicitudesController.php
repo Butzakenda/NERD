@@ -11,10 +11,10 @@ use App\Models\Notificaciones;
 use App\Models\Documentos;
 use App\Models\Entrevista;
 use App\Models\User;
-
+use Illuminate\Support\Facades\Auth;
 use App\Models\RevisarProducto;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
-use Illuminate\Support\Facades\Auth;
+
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
 
@@ -121,7 +121,7 @@ class SolicitudesController extends Controller
                 $solicitudAlianzaPDF->save($solicitudAlianzaPDFPath);
 
 
-                SeguimientoProductos::create([
+                $Seguimiento = SeguimientoProductos::create([
                     'IdAdministrador' => $registerProduct->IdAdministrador,
                     'IdCliente' => $registerProduct->IdCliente,
                     'IdSolicitud' => $registerProduct->IdSolicitud,
@@ -131,11 +131,14 @@ class SolicitudesController extends Controller
                     'FechaMatricula' => now(),
                 ]);
                 $registerProduct->update([
-                    'Estado' => 'Convocado a Entrevista'
+                    'Estado' => 'Convocado a Entrevista',
+                    'IdSeguimientoProductos' => $Seguimiento->IdSeguimientoProductos
                 ]);
+
                 $cliente->update([
                     'SolicitudAlianza' => $solicitudAlianzaPDFPath,
                 ]);
+
                 Documentos::create([
                     'IdCliente' => $registerProduct->IdCliente,
                     'tipo' => 'Copia de Registro',

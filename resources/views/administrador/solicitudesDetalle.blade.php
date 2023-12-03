@@ -127,13 +127,13 @@
                                             @include('administrador.EstadoSolicitudes.entrevista')
                                         @elseif ($solicitud->Estado == 'En proceso de contratación')
                                             @include('administrador.EstadoSolicitudes.contratacion')
+                                        @elseif($solicitud->Estado == 'Contratado')
+                                            @include('administrador.EstadoSolicitudes.contratado')
                                         @else
                                             <h5>Algo ha salido mal...</h5>
                                         @endif
                                     </div>
-                                </section class="section">
-
-                                <section>
+                                
 
                                 </section>
                             </div>

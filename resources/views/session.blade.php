@@ -92,13 +92,21 @@
 
             <!-- Page Content -->
             <div id="content" class="p-4">
-                
+
                 @if (session('error_message') && now() <= session('flash_lifetime'))
                     <div class="alert alert-warning">
                         {{ session('error_message') }}
                     </div>
                 @endif
-                @yield('contenidoAT')
+                @if (auth()->check())
+                    @yield('contenidoAT')
+
+                @else
+                    
+                    <p>Por favor, inicia sesión.</p>
+                    
+                @endif
+
             </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Solicitud extends Model
 {
-    protected $fillable = ['IdSolicitud','IdEntrevista','IdAdministrador','IdCliente','Nombre','Tipo','Estado','Descripcion','Fecha'];
+    protected $fillable = ['IdCliente','IdEntrevista','IdAdministrador','IdSeguimientoProductos','Nombre','Tipo','Estado','Descripcion','Fecha'];
     protected $primaryKey = 'IdSolicitud';
     protected $table = 'Solicitudes';
     public function Cliente()

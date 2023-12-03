@@ -38,8 +38,8 @@ Route::get('/',function (){
 Route::get('session/index','SessionController@index')->name('sesion.index');
 //Cliente
     
-    Route::get('session/RegistroActividad/detalles/notificacion-detalles/{noti}', 'SessionController@NotficacionesDetalles')->name('NotficacionesDetalles');
-    Route::post('session/RegistroActividad/detalles/contrato','SessionController@DocumentosContrato')->name('documentos.contrato');
+    Route::get('session/RegistroActividad/detalles/notificacion-detalles/{noti}/{iduser}', 'SessionController@NotficacionesDetalles')->name('NotficacionesDetalles');
+    Route::post('session/RegistroActividad/detalles/contrato/{id}','SessionController@DocumentosContrato')->name('documentos.contrato');
     Route::get('session/RegistroActividad/detalles','SessionController@RegistroActividadDetalles')->name('sesion.actividadDetalles');
     Route::get('session/RegistroActividad/{id}','SessionController@RegistroActividad')->name('sesion.actividad');
     //Actualizar
@@ -77,17 +77,22 @@ Route::post('/enviar-solicitud-alianza', 'ClienteController@enviarSolicitudAlian
     //Retornar la vista para agendar entrevista
     Route::get('/show/solictudes/entrevista/{id}','AdministradorController@showEntrevistaForm')->name('solicitudes.entrevista');
     //Retornar la pestaña para agendar entrevistas
-    Route::get('/show/solictudes/entrevista/agendar/{idEntrevista}','AdministradorController@agendarReunion')->name('solicitudes.agendarReunion');
+    Route::get('/show/solictudes/entrevista/agendar/{idSolicitud}/{idCliente}','AdministradorController@agendarReunion')->name('solicitudes.agendarReunion');
     //Añadir los campos si se aprueba la entrevista
     Route::post('/solicitudes/AvalRevisionAprobado/{id}','SolicitudesController@EntrevistaAprobada')->name('solicitudes.EntrevistaAprobada');
     //Añadir los campos si no se aprueba la entrevista
     Route::post('/solicitudes/AvalRevisionDenegado/{id}','SolicitudesController@EntrevistaDenegada')->name('solicitudes.EntrevistaDenegada');
     //Registrar seguimiento de producto 
     Route::post('/solicitudes/seguimiento/{id}','SolicitudesController@RealizarSeguimiento')->name('Seguimiento');
-
-
+    //Realizar la contratación y crea nuevo usuario colaborador
+    Route::post('/solicitudes/seguimiento/contrato-colaborador/{idseguimiento}/{idcliente}','AdministradorController@RealizarContrato')->name('contrato.colaborador');
     
-/* -------------- */    
+    
+/* Colaborador */
+    // Ruta al formulario desde el correo enviado al nuevo colaborador
+    Route::get('/registrar-colaborador/{IdColaborador}', 'ColaboradorController@mostrarFormularioRegistro')->name('mostrar-formulario-registro');
+    Route::post('/registrar-colaborador/formulario-registro/{idColaborador}', 'ColaboradorController@procesarFormularioRegistro')->name('procesar-formulario-registro');
+    
 /* -------------- */
 Auth::routes();
 

@@ -1,6 +1,16 @@
 @extends('session')
 
 @section('contenidoAT')
+    @if (session('success_message') && now() <= session('flash_lifetime'))
+        <div class="alert alert-success">
+            {{ session('success_message') }}
+        </div>
+    @endif
+    @if (session('error_message') && now() <= session('flash_lifetime'))
+        <div class="alert alert-warning">
+            {{ session('error_message') }}
+        </div>
+    @endif
     <div class="documentacion">
         <h2>
             Documentación para contrato - NERD
@@ -21,8 +31,23 @@
             Ciudadanía.
             Una vez subas todos los documentos se te indicarán los siguientes pasos:
         </p>
-        <form action="{{ route('documentos.contrato') }}" id="documentosForm" method="post" enctype="multipart/form-data">
+        <form action="{{ route('documentos.contrato', Auth::user()->id) }}" id="documentosForm" method="post"
+            enctype="multipart/form-data">
             @csrf
+            <p>Seleccione el seguimiento de producto al que desea llevar los documentos de la siguiente lista desplegable.
+                Aquí encontrará el nombre de los productos que han sido matriculados:
+            </p>
+
+
+            @isset($seguimientos)
+                <select name="seguimiento_id" id="seguimiento_id" class="form-select">
+                    @foreach ($seguimientos as $seguimiento)
+                        <option value=" {{ $seguimiento->solicitud->IdSolicitud }} "> {{ $seguimiento->solicitud->Nombre }}
+                        </option>
+                    @endforeach
+                </select>
+            @endisset
+
 
             <!-- Input para Hoja de Vida -->
             <div class="mb-3">
@@ -49,7 +74,7 @@
                     required>
                 <small class="text-muted">Formatos permitidos: PDF</small>
             </div>
-            <button class="btn btn-primary" >Enviar Documentos</button>
+            <button class="btn btn-primary">Enviar Documentos</button>
         </form>
     </div>
 @endsection

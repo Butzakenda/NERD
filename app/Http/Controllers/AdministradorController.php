@@ -6,11 +6,21 @@ use Illuminate\Http\Request;
 use App\Models\Solicitud;
 use App\Models\Cliente;
 use App\Models\Administrator;
+use App\Models\Colaborador;
 use App\Models\Entrevista;
 use App\Models\Notificaciones;
+use App\Models\Contrato;
+use App\Models\SeguimientoProductos;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\CredencialesNuevoColaborador;
+use Illuminate\Support\Facades\File;
 
 class AdministradorController extends Controller
 {
@@ -44,11 +54,28 @@ class AdministradorController extends Controller
         $DetalleSolicitud = Cliente::with(['departamento', 'ciudad', 'solicitudes' => function ($query) use ($idsolicitud) {
             $query->where('IdSolicitud', $idsolicitud);
         }])->find($id);
+        //Obtener los datos de la solicitud
+        $Solicitud = Solicitud::where('IdSolicitud', $idsolicitud)->first();
+
+        //Actualizar $SeguimientoSolicitud para que lleve los datos de SeguimientoProductos
+        $SeguimientoSolicitud = SeguimientoProductos::where('IdSeguimientoProductos', $Solicitud->IdSeguimientoProductos)
+            ->with('contratos')
+            ->get();
+        $hojaVidaPath = asset('pdfs/Documents-' . $id . '/contrato/23_hoja_vida.pdf');
+        $seguroMedicoPath = asset('pdfs/Documents-' . $id . '/contrato/23_seguro_medico.pdf');
+        $documentoIdentificacionPath = asset('pdfs/Documents-' . $id . '/contrato/23_copia_cedula.pdf');
 
         // Obtener las notificaciones del cliente
         $notificacionesCliente = Notificaciones::where('IdCliente', $id)->first();
 
-        return view('Administrador.solicitudesDetalle', compact('DetalleSolicitud', 'notificacionesCliente'));
+        return view('Administrador.solicitudesDetalle', compact(
+            'DetalleSolicitud',
+            'notificacionesCliente',
+            'SeguimientoSolicitud',
+            'hojaVidaPath',
+            'seguroMedicoPath',
+            'documentoIdentificacionPath'
+        ));
     }
 
     public function showEntrevistaForm($id)
@@ -56,17 +83,18 @@ class AdministradorController extends Controller
         $InfoClienteEntrevista = Cliente::where('IdCliente', '=', $id)->get();
         return view('emails.agendarEntrevista', compact('InfoClienteEntrevista'));
     }
-    public function agendarReunion($idEntrevista)
+    public function agendarReunion($idsolicitud, $idEntrevista)
     {
 
         try {
             $EntrevistaInfo = Cliente::where('IdCliente', '=', $idEntrevista)->first();
-
-            $solicitud = Solicitud::where('IdCliente', $idEntrevista)->first();
             /* dd($EntrevistaInfo); */
+            $solicitud = Solicitud::where('IdSolicitud', $idsolicitud)->first();
+            /* dd($solicitud); */
             $solicitud->update([
                 'Estado' => 'Entrevista'
             ]);
+
             $InfoClienteEntrevista = [
                 'CorreoELectronico' => $EntrevistaInfo->CorreoELectronico,
             ];
@@ -84,6 +112,86 @@ class AdministradorController extends Controller
             // En caso de error, maneja la excepción y revierte la transacción
             DB::rollBack();
 
+            session()->forget('error_message');
+            session()->flash('error_message', 'Se produjo un error al procesar la solicitud.');
+            session()->put('flash_lifetime', now()->addSeconds(5));
+            return redirect()->back();
+        }
+    }
+    public function RealizarContrato(string $idseguimiento, $idcliente)
+    {
+        try {
+            //Hallar al cliente
+            $cliente = Cliente::where('IdCliente', $idcliente)->first();
+            //Hallar el seguimiento asocioado
+            $seguimiento = SeguimientoProductos::where('IdSeguimientoProductos', $idseguimiento)->first();
+
+            $solicitud = Solicitud::where('IdSolicitud', $seguimiento->IdSolicitud)->first();
+            
+            $contrato = Contrato::where('IdSeguimientoProductos', $seguimiento->IdSeguimientoProductos)->first();
+
+            // Definir el directorio base
+            $pdfBaseDirectory = public_path('pdfs');
+            // Obtener el ID del cliente
+            $idCliente = $cliente->IdCliente;
+            // Define el nombre de la carpeta del cliente
+            $clienteFolder = 'Documents-' . $idCliente;
+            // Verifica si la carpeta del cliente existe, si no, créala
+            $clienteDirectory = $pdfBaseDirectory . '/' . $clienteFolder;
+            if (!File::isDirectory($clienteDirectory)) {
+                File::makeDirectory($clienteDirectory, 0755, true);
+            }
+            // Verifica si la carpeta contrato existe dentro de $clienteDirectory, si no créala
+            $contratoDirectory = $clienteDirectory . '/contrato';
+            if (!File::isDirectory($contratoDirectory)) {
+                File::makeDirectory($contratoDirectory, 0755, true);
+            }
+
+            $contratoPDF = PDF::loadView('administrador.pdfs.contrato', ['cliente' => $cliente]);
+            $contratoPDFPath = $contratoDirectory . '/' . $idCliente . '_NERD_contrato.pdf';
+            $contratoPDF->save($contratoPDFPath);
+
+            
+            
+            //Crear el colaborador
+            $colaborador = Colaborador::create([
+                'IdDepartamento' => $cliente->IdDepartamento,
+                'IdCiudad' => $cliente->IdCiudad,
+                'Documento' => $cliente->Documento,
+                'Nombres' => $cliente->Nombres,
+                'Apellidos' => $cliente->Apellidos,
+                'Telefono' => $cliente->Telefono,
+                'FechaNacimiento' => $cliente->FechaNacimiento,
+            ]);
+            //Actualzar el contrato
+            $contrato->update([
+                'Contrato' => $contratoPDFPath,
+                'IdColaborador' => $colaborador->IdColaborador,
+            ]);
+
+            //Actualizar el seguimiento
+            $seguimiento->update([
+                'IdColaborador' => $colaborador->IdColaborador,
+            ]);
+            $solicitud->update([
+                'Estado' => 'Contratado'
+            ]);
+            
+            DB::beginTransaction();
+            DB::commit();
+            $correo = new CredencialesNuevoColaborador($colaborador);
+            $correo->with([
+                'nombre' => $colaborador->Nombres,
+                'correo' => $colaborador->CorreoELectronico,
+                'idColaborador' => $colaborador->IdColaborador,
+            ]);
+            Mail::to($cliente->CorreoELectronico)->send($correo);
+            session()->forget('success_message');
+            session()->flash('success_message', '¡Se ha creado el colaborador!');
+            session()->put('flash_lifetime', now()->addSeconds(5));
+            return redirect()->back();
+        } catch (\Exception $e) {
+            DB::rollBack();
             session()->forget('error_message');
             session()->flash('error_message', 'Se produjo un error al procesar la solicitud.');
             session()->put('flash_lifetime', now()->addSeconds(5));

@@ -8,7 +8,7 @@ class Colaborador extends Model
 {
     protected $table = 'colaboradores';
 
-    protected $fillable = ['IdDepartamento', 'IdCiudad', 'Documento', 'Nombres', 'Apellidos', 'CorreoELectronico', 'Telefono', 'FechaNacimiento'];
+    protected $fillable = ['IdDepartamento', 'IdCiudad','user_id', 'Documento', 'Nombres', 'Apellidos', 'CorreoELectronico', 'Telefono', 'FechaNacimiento'];
     protected $primaryKey = 'IdColaborador';
     public function departamento()
     {

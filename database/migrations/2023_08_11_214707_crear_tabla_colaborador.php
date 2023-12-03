@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('Documento', 20);
             $table->string('Nombres', 50);
             $table->string('Apellidos', 50);
-            $table->string('CorreoELectronico', 50);
+            $table->string('CorreoELectronico', 50)->nullable();
             $table->string('Telefono', 20);
             $table->date('FechaNacimiento');
             $table->timestamps();

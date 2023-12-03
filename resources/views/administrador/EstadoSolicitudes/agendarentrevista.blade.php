@@ -16,10 +16,11 @@
             <p>
                 Correo Electrónico: {{ $DetalleSolicitud->CorreoELectronico }}
             </p>
-
-            <form action="{{ route('solicitudes.agendarReunion', $DetalleSolicitud->IdCliente) }}">
-                <button>Agendar Cita</button>
-            </form>
+            @foreach ($DetalleSolicitud->solicitudes as $solicitud)
+                <form action="{{ route('solicitudes.agendarReunion', [$solicitud->IdSolicitud,$DetalleSolicitud->IdCliente]) }}">
+                    <button>Agendar Cita</button>
+                </form>
+            @endforeach
         @endisset
     </div>
 </div>

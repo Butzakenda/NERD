@@ -25,7 +25,7 @@
                                 Descripción: {{ $noti->Descripcion }}
                             </p>
                             <div class="actions">
-                                <form action="{{ route('NotficacionesDetalles',$noti->Tipo) }}" method="get">
+                                <form action="{{ route('NotficacionesDetalles',[$noti->Tipo, Auth::user()->id]) }}" method="get">
                                     @csrf
                                     <button type="submit" class="btn btn-primary read">
                                         Más detalles
