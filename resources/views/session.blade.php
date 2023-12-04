@@ -23,13 +23,18 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href=" {{ asset('css/index.css') }} ">
     <link rel="stylesheet" href=" {{ asset('css/RegistroActividad.css') }} ">
+    <script src="https://kit.fontawesome.com/27fd1b30a7.js" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href=" {{ asset('css/branchHeader.css') }} ">
+    <link rel="stylesheet" href=" {{ asset('css/sidebar.css') }} ">
+    
 
 </head>
 
 <body>
     @include('partials.header')
     @include('partials.menuindex')
-    <div class="container-fluid w-100">
+    <div class="container-fluid w-100 contenidoHeader">
         <div class="row d-flex align-items-center">
             <div class="col-9">
 
@@ -47,71 +52,29 @@
 
 
             <!-- Sidebar -->
+            @if (!request()->is('session/productos'))
+                @include('partials.sidebar')
+            @endif
 
-            <nav id="sidebar" class="bg-light">
-                @if (!request()->is('session/productos'))
-                    <!-- Verifica si la ruta actual no coincide con 'session/productos' -->
-                    <div class="p-4">
-                        <ul class="list-unstyled">
-                            @auth
-                                @if (Auth::user()->tipo == 'Administrador')
-                                    @auth
-                                        <h2> {{ Auth::user()->tipo }} </h2>
-                                        <li><a href="">Crear Nuevo Administrador</a></li>
-                                        <li><a href="{{ route('administrador.create') }}">Crear Nuevo Colaborador</a></li>
-                                        <li><a href="">Dashboard</a></li>
-                                        <li><a href=" {{ route('solicitudes.show') }} ">Solicitudes</a></li>
-                                    @endauth
-                                @else
-                                    @auth
-                                        <h2> {{ Auth::user()->tipo }} </h2>
-                                        <li><a href="{{ route('cliente.edit', Auth::user()->id) }}">Actualizar perfil</a></li>
-                                        <li><a href="#">Desactivar cuenta</a></li>
-                                        <li><a href="{{ route('sesion.actividad', Auth::user()->id) }}">Registro de
-                                                actividad</a></li>
-                                        <li><a href=" {{ route('cliente.changePasswordForm') }} ">Cambiar contraseña</a></li>
-                                        <li><a href="{{ route('cliente.solicitarAlianzaForm') }}">Solicitar Alianza</a></li>
-                                    @endauth
-                                @endif
-                            @endauth
-                            <li>
-                                @auth
-                                    <a class="" href="{{ route('logout') }}"
-                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                        Cerrar sesión
-                                    </a>
-                                @endauth
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                    @csrf
-                                </form>
-                            </li>
-                        </ul>
-                    </div>
-                @endif
-            </nav>
+
 
             <!-- Page Content -->
-            <div id="content" class="p-4">
+            <div id="content" class="p-4 ">
 
                 @if (session('error_message') && now() <= session('flash_lifetime'))
                     <div class="alert alert-warning">
                         {{ session('error_message') }}
                     </div>
                 @endif
-                @if (auth()->check())
-                    @yield('contenidoAT')
+                @yield('contenidoAT')
 
-                @else
-                    
-                    <p>Por favor, inicia sesión.</p>
-                    
-                @endif
 
             </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     </div>
     </div>
+    @include('partials.footer')
 </body>
 
 </html>

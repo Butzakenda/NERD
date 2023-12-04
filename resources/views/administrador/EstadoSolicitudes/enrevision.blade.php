@@ -1,7 +1,7 @@
 @if ($solicitud->IdAdministrador)
     <div class="accordion" id="accordionExample">
         <div class="accordion-item">
-            <h2 class="accordion-header" id="headingOne">
+            <h2 class="accordion-header" id="headingOne" ">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
                     aria-expanded="true" aria-controls="collapseOne">
                     Matricular producto o servicio:
@@ -13,7 +13,7 @@
                     <form action=" {{ route('solicitudes.servicio', $solicitud->IdSolicitud) }} " method="post">
                         @csrf
                         <h5>Matricular Producto</h4>
-                            <p>Tenga en cuenta que para revertir esta acción se
+                            <p style="color: black;">Tenga en cuenta que para revertir esta acción se
                                 requiere
                                 enviar
                                 un correo: </p>
@@ -36,8 +36,8 @@
                         action="{{ route('solicitudes.rejected', [$solicitud->IdSolicitud, $DetalleSolicitud->IdCliente]) }}"
                         method="post">
                         @csrf
-                        <p>Tipo de solicitud: {{ $solicitud->Tipo }}</p>
-                        <p>Describa el motivo de rechazo:</p>
+                        <p style="color: black;">Tipo de solicitud: {{ $solicitud->Tipo }}</p>
+                        <p style="color: black;">Describa el motivo de rechazo:</p>
                         <textarea name="motivoRechazo" rows="8" cols="60"></textarea>
                         <br>
                         <button>Rechazar solicitud</button>
@@ -48,14 +48,18 @@
     </div>
 @else
     <div class="div">
-        <p>
+        <p style="color: white;">
             Para realizar alguna acción debe registrarse en el seguimiento al producto ¿
             Desea realizar el seguimiento de este producto?
         </p>
         <form action="{{route('Seguimiento',$solicitud->IdSolicitud)}}" class="form" method="post">
             @csrf
             <div class="form-group">
-                <button class="btn btn-outline-success form-control">Realizar seguimiento</button>
+                <button style="background: green; color: white;" class="btn btn-outline-success form-control">
+                    
+                        Realizar seguimiento
+                    
+                </button>
             </div>
         </form>
         

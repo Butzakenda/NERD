@@ -1,19 +1,19 @@
 <div class="container">
     <div class="row">
-        <h5>
+        <h5 style="color: white;">
             Formulario para citar a Entrevista
         </h5>
-        <h6>
+        <h6 style="color: white;">
             Datos del cliente
         </h6>
         @isset($DetalleSolicitud)
-            <p>
+            <p style="color: white;">
                 Nombre : {{ $DetalleSolicitud->Nombres . ' ' . $DetalleSolicitud->Apellidos }}
             </p>
-            <p>
+            <p style="color: white;">
                 Número de teléfono: {{ $DetalleSolicitud->Telefono }}
             </p>
-            <p>
+            <p style="color: white;">
                 Correo Electrónico: {{ $DetalleSolicitud->CorreoELectronico }}
             </p>
             @foreach ($DetalleSolicitud->solicitudes as $solicitud)

@@ -6,7 +6,7 @@
 
 @section('contenidoAT')
     <div class="container">
-        <h2>Cambiar Contraseña</h2>
+        <h2 style="color: white" >Cambiar Contraseña</h2>
         @if(session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
@@ -17,17 +17,18 @@
                 <form method="POST" action="{{ route('cliente.updatePassword') }}">
                     @csrf
                     <div class="form-group">
-                        <label class="form-label">Contraseña Actual:</label>
+                        <label style="color: white" class="form-label">Contraseña Actual:</label>
                         <input class="form-control" type="password" name="current_password">
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Nueva Contraseña:</label>
+                        <label style="color: white"  class="form-label">Nueva Contraseña:</label>
                         <input class="form-control" type="password" name="new_password">
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Confirmar Nueva Contraseña:</label>
+                        <label style="color: white"  class="form-label">Confirmar Nueva Contraseña:</label>
                         <input class="form-control" type="password" name="new_password_confirmation">
                     </div>
+                    <br>
                     <button type="submit" class="btn btn-primary">Cambiar Contraseña</button>
                 </form>
             </div>

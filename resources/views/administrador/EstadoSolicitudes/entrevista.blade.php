@@ -1,6 +1,6 @@
 @foreach ($DetalleSolicitud->solicitudes as $MySolicitud)
-    <h5>Entrevista</h5>
-    <p>¿El aspirante aprobó la entrevista?</p>
+    <h5 style="color: white;">Entrevista</h5>
+    <p style="color: white;">¿El aspirante aprobó la entrevista?</p>
     <form action="{{ route('solicitudes.EntrevistaAprobada', $MySolicitud->IdSolicitud) }}" class="form" method="post">
         @csrf
 

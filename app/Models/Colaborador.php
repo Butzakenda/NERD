@@ -19,4 +19,9 @@ class Colaborador extends Model
     {
         return $this->belongsTo(Ciudades::class, 'IdCiudad');
     }
+    public function producto()
+    {
+        return $this->hasMany(Producto::class, 'IdColaborador');
+    }
+
 }

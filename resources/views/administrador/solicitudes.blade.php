@@ -4,35 +4,41 @@
     <div class="container">
         <h3>Solicitudes:</h3>
         {{-- {{dd($solicitudes)}}   --}}
-        <table class="table">
+        <table class="tablaSolicitudes">
             <thead>
-                <th scope="col" style="width: 20%;">Tipo de solicitud</th>
-                <th scope="col" style="width: 25%;">Nombres y Apellidos Cliente</th>
-                <th scope="col" style="width: 15%;">Estado</th>
-                <th scope="col" style="width: 25%;">Administrador encargado</th>
-                <th scope="col" style="width: 15%;">Fecha</th>
-                <th scope="col" style="width: 5%;">Acciones</th>
+                <th scope="col" style="width: 20%; color: white;">Tipo de solicitud</th>
+                <th scope="col" style="width: 25%; color: white;">Nombres y Apellidos Cliente</th>
+                <th scope="col" style="width: 15%; color: white;">Estado</th>
+                <th scope="col" style="width: 25%; color: white;">Administrador encargado</th>
+                <th scope="col" style="width: 15%; color: white;">Fecha</th>
+                <th scope="col" style="width: 5%; color: white;">Acciones</th>
             </thead>
-            <tbody>
+            <tbody class="tablaSolicitudes">
                 @foreach ($solicitudes as $solicitud)
-                    <tr class="fila-dato">
-                        <td scope="row">
+                    <tr class="fila-dato tablaSolicitudes">
+                        <td scope="row " class="tablaSolicitudes">
                             <p>{{ $solicitud->Tipo }}</p>
                         </td>
-                        <td scope="row">
+                        <td scope="row" class="tablaSolicitudes">
                             <p>{{ $solicitud->cliente->Nombres . ' ' . $solicitud->cliente->Apellidos }}</p>
                         </td>
-                        <td scope="row">
+                        <td scope="row" class="tablaSolicitudes">
                             <p>{{ $solicitud->Estado }}</p>
                         </td>
-                        <td scope="row">
+                        <td scope="row" class="tablaSolicitudes">
                             @isset($solicitud->administrador->Nombres)
-                                {{ $solicitud->administrador->IdAdministrador . '. ' . $solicitud->administrador->Nombres . ' ' . $solicitud->administrador->Apellidos }}
+                                <p>
+
+                                    {{ $solicitud->administrador->IdAdministrador . '. ' . $solicitud->administrador->Nombres . ' ' . $solicitud->administrador->Apellidos }}
+                                </p>
                             @else
-                                No asignado
+                                <p>
+
+                                    No asignado
+                                </p>
                             @endisset
                         </td>
-                        <td scope="row">
+                        <td scope="row" class="tablaSolicitudes">
                             <p>{{ $solicitud->Fecha }}</p>
                         </td>
                         <td scope="row">
@@ -42,7 +48,7 @@
                         </td>
                     </tr>
                 @endforeach
-                <!-- Repite la estructura anterior para cada registro -->
+                
             </tbody>
         </table>
     </div>

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Producto extends Model
 {
-    protected $fillable = ['IdInscribirProducto', 'IdDepartamento', 'IdCiudad', 'IdCategoria', 'IdColaborador', 'Nombre', 'Precio', 'Descripcion'];
+    protected $fillable = ['IdSeguimientoProductos', 'IdDepartamento', 'IdCiudad', 'IdCategoria', 'IdColaborador', 'Nombre', 'Precio', 'Descripcion','Foto'];
     protected $primaryKey = 'IdProducto';
     protected $table = 'productos';
     public function inscribirProducto()

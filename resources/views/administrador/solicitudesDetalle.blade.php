@@ -18,8 +18,8 @@
                 {{-- {{dd($DetalleSolicitud->solicitudes)}} --}}
                 <div class="infoClienteDetalle me-4">
 
-                    <h3>Información del cliente</h3>
-                    <table class="table table-bordered">
+                    <h3 style="color: white;">Información del cliente</h3>
+                    <table class="table table-bordered tablaSolicitudes">
                         <tbody>
                             <tr>
                                 <td><strong>Información</strong></td>
@@ -27,7 +27,7 @@
                             </tr>
                             <tr>
                                 <td>Nombres:</td>
-                                <td>{{ $DetalleSolicitud->Nombres }}</td>
+                                <td >{{ $DetalleSolicitud->Nombres }}</td>
                             </tr>
                             <tr>
                                 <td>Apellidos:</td>
@@ -65,7 +65,7 @@
                     </table>
                 </div>
                 <div class="infoAdminDetalle  justify-content-center">
-                    <h3>Detalles de la solicitud</h3>
+                    <h3 style="color: white;">Detalles de la solicitud</h3>
                     <table class="table table-bordered">
                         @foreach ($DetalleSolicitud->solicitudes as $solicitud)
                             <tbody>
@@ -109,7 +109,7 @@
 
                         <div class="row">
                             <div class="row">
-                                <h4>
+                                <h4 style="color: white;"> 
                                     Acciones:
                                 </h4>
                             </div>

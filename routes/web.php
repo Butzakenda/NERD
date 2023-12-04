@@ -92,7 +92,13 @@ Route::post('/enviar-solicitud-alianza', 'ClienteController@enviarSolicitudAlian
     // Ruta al formulario desde el correo enviado al nuevo colaborador
     Route::get('/registrar-colaborador/{IdColaborador}', 'ColaboradorController@mostrarFormularioRegistro')->name('mostrar-formulario-registro');
     Route::post('/registrar-colaborador/formulario-registro/{idColaborador}', 'ColaboradorController@procesarFormularioRegistro')->name('procesar-formulario-registro');
-    
+    //Mostrar los productos del colaborador
+    Route::get('/productos-colaborador/{IdColaborador}', 'ColaboradorController@MostrarProductos')->name('productos.colaborador');
+    //Mostrar el formulario para crear un nuevo producto
+    Route::get('/productos-colaborador/nuevo-producto/{IdColaborador}', 'ColaboradorController@CrearProductoForm')->name('productos.crearForm');
+    //Crear el producto
+    Route::post('/productos-colaborador/crear-producto/{idColaborador}', 'ColaboradorController@CrearProducto')->name('productos.crear');
+
 /* -------------- */
 Auth::routes();
 

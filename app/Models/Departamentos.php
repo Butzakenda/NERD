@@ -10,7 +10,7 @@ class Departamentos extends Model
     protected $primaryKey = 'IdDepartamento';
     public function ciudades()
     {
-        return $this->belongsTo(Ciudades::class, 'IdCiudad');
+        return $this->hasMany(Ciudades::class, 'IdDepartamento');
     }
     public function colaborador()
     {

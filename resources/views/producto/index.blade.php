@@ -2,8 +2,7 @@
 
 @section('contenidoAT')
     <link rel="stylesheet" href=" {{ asset('css/Productos.css') }} ">
-
-    <div class="container">
+    <div class="container contenidoHeader">
         <h1>Productos</h1>
         @isset($productos)
             <div class="container">
@@ -43,11 +42,12 @@
                     @endforeach
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-6 ">
-                <div class="col-6">
-                    {{ $productos->links('pagination::bootstrap-4') }} <!-- Muestra los enlaces de paginación -->
+
+            <div class="row">
+                <div class="col-6 ">
+                    <div class="col-6">
+                        {{ $productos->links('pagination::bootstrap-4') }} <!-- Muestra los enlaces de paginación -->
+                    </div>
                 </div>
             </div>
         </div>
