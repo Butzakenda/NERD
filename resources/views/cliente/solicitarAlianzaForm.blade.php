@@ -32,10 +32,10 @@
         @endif
 
         <label style="color: white"  for="">Nombre del producto</label>
-        <input type="text" name="nombreProductoSA">
+        <input type="text" class="form-control" name="nombreProductoSA">
         <p style="color: white" ><strong>Descripción del producto o servicio:</strong></p>
-        <textarea name="descripcionProductoSA" id="" cols="30" rows="10" value="">{{ $descripcion }}</textarea>
+        <textarea name="descripcionProductoSA" class="form-control" id="" cols="30" rows="10" value="">{{ $descripcion }}</textarea>
         <br>
-        <button class="btn btn-primary" type="submit">Enviar Solicitud</button>
+        <button class="btn btn-primary " type="submit">Enviar Solicitud</button>
     </form>
 @endsection

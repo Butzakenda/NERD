@@ -8,12 +8,14 @@ use App\Models\User;
 use App\Models\Notificaciones;
 use App\Models\Colaborador;
 use App\Models\Contrato;
+use App\Models\Factura;
 use App\Models\SeguimientoProductos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 class SessionController extends Controller
 {
@@ -32,12 +34,25 @@ class SessionController extends Controller
     public function RegistroActividad(string $id)
     {
         try {
-            //code...
+            $cliente = null;
+            $colaborador = null;
+            $notificaciones = null;
+
             $user = User::find($id);
-            $cliente = $user->cliente;
-            $notificaciones = Notificaciones::where('IdCliente', $cliente->IdCliente)
-                ->orderBy('IdNotificacion', 'desc')
-                ->get();
+
+            $userTipo = $user->tipo;
+            if ($userTipo == 'Cliente') {
+                $cliente = $user->cliente;
+                $notificaciones = Notificaciones::where('IdCliente', $cliente->IdCliente)
+                    ->orderBy('IdNotificacion', 'desc')
+                    ->paginate(6);
+            } elseif ($userTipo == 'Colaborador') {
+                $colaborador = $user->colaborador;
+                $notificaciones = Notificaciones::where('IdColaborador', $colaborador->IdColaborador)
+                    ->orderBy('IdNotificacion', 'desc')
+                    ->paginate(6);
+            }
+            
 
             //dd($notificaciones);
             return view('cliente.RegistroActividad.registroActividad', compact('notificaciones'));
@@ -102,7 +117,7 @@ class SessionController extends Controller
             $DocumentPDFPath = $contratoDirectory . DIRECTORY_SEPARATOR . $documentoIdentificacionFileName;
 
             $seguimientoId = $request->input('seguimiento_id');
-            
+
             //Crear el contrato
             Contrato::create([
                 'IdSeguimientoProductos' =>  $seguimientoId,
@@ -126,29 +141,49 @@ class SessionController extends Controller
             return redirect()->back();
         }
     }
-    public function NotficacionesDetalles($noti, $iduser)
+    public function NotficacionesDetalles($noti, $iduser, $idnotificaion)
     {
 
         try {
+            $factura = null;
             //Encontrar al usuario del cliente
             $user = User::find($iduser);
-
+            $vistaNoti = null;
             // Encontrar al cliente de ese usuario
             $cliente = $user->cliente;
+            //Obtener las notificaciones que llevan enlaceRelacionado
+            $notificacion = Notificaciones::where('IdNotificacion', $idnotificaion)
+                ->with('factura')
+                ->first();
+
+
+            //Obtener la notificación correspondiente
+            /* $notificaciones = Notificaciones::where('IdNotificacion',$idnotificaion)->get();
+            
+            $notificaciones->each(function ($factura) {
+                $factura = Factura::where('IdFactura', $factura->enlaceRelacionado)->first();
+            }); */
+
+
 
             $seguimientos = SeguimientoProductos::where('IdCliente', $cliente->IdCliente)
                 ->with(['Cliente', 'solicitud' => function ($query) {
-                    // Puedes seleccionar los campos que desees incluir en la relación
-                    $query->select('IdSolicitud', 'Nombre', /* otros campos si es necesario */);
+
+                    $query->select('IdSolicitud', 'Nombre');
                 }])
                 ->get();
-            //dd($seguimientos);
+
             if ($noti == 'Entrevista Avalada') {
-                $noti = 'EntrevistaAvalada';
-            } elseif ($noti = 'Solicitud Alianza') {
-                $noti = 'SolicitudAlianza';
+                $vistaNoti = 'EntrevistaAvalada';
+            } elseif ($noti == 'Solicitud Alianza') {
+                $vistaNoti = 'SolicitudAlianza';
+            } elseif ($noti == 'Factura') {
+
+                $vistaNoti = 'Producto';
             }
-            return view('cliente.RegistroActividad.' . $noti, compact('seguimientos'));
+
+
+            return view('cliente.RegistroActividad.' . $vistaNoti, compact('seguimientos', 'notificacion'));
         } catch (\Exception $e) {
         }
     }

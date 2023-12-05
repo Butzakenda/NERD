@@ -6,8 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class PQR extends Model
 {
-    protected $fillable = ['IdColaborador', 'IdCliente', 'Tipo', 'Calidad', 'Descripcion'];
+    protected $fillable = ['IdColaborador', 'IdCliente', 'IdAdministrador', 'Tipo', 'Calidad', 'Descripcion'];
     protected $primaryKey = 'IdQPR';
+    protected $table = 'pqrs';
     public function colaborador()
     {
         return $this->belongsTo(Colaborador::class, 'IdColaborador');

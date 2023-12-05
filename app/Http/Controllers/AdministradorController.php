@@ -15,6 +15,7 @@ use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use App\Models\User;
+use App\Models\PQR;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
@@ -27,17 +28,47 @@ class AdministradorController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function guardarPqr(Request $request)
     {
-        //
-    }
+        try {
+            $cliente = null;
+            $colaborador = null;
+    
+            $user = Auth::User();
+    
+            $userTipo = $user->tipo;
+    
+            if ($userTipo == 'Cliente') {
+                $cliente = $user->cliente;
+                $pqr = PQR::create([
+                    'IdCliente' => $cliente->IdCliente,
+                    'Tipo' => $request['tipoPQR'],
+                    'Calidad' =>  $userTipo,
+                    'Descripcion' => $request['descripcionPQR']
+                ]);
+            } else {
+                $colaborador = $user->colaborador;
+                $pqr = PQR::create([
+                    'IdColaborador' => $colaborador->IdColaborador,
+                    'Tipo' => $request['tipoPQR'],
+                    'Calidad' =>  $userTipo,
+                    'Descripcion' => $request['descripcionPQR']
+                ]);
+            }
+            DB::beginTransaction();
+            DB::commit();
+            session()->forget('success_message');
+            session()->flash('success_message', '¡Se ha enviado el PQR!');
+            session()->put('flash_lifetime', now()->addSeconds(5));
+            return redirect()->back();
+        } catch (\Exception $e) {
+            DB::rollBack();
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+            session()->forget('error_message');
+            session()->flash('error_message', 'Se produjo un error al procesar la solicitud.');
+            session()->put('flash_lifetime', now()->addSeconds(5));
+            return redirect()->back();
+        }
     }
     public function showSolicitudes()
     {
@@ -127,7 +158,7 @@ class AdministradorController extends Controller
             $seguimiento = SeguimientoProductos::where('IdSeguimientoProductos', $idseguimiento)->first();
 
             $solicitud = Solicitud::where('IdSolicitud', $seguimiento->IdSolicitud)->first();
-            
+
             $contrato = Contrato::where('IdSeguimientoProductos', $seguimiento->IdSeguimientoProductos)->first();
 
             // Definir el directorio base
@@ -151,8 +182,8 @@ class AdministradorController extends Controller
             $contratoPDFPath = $contratoDirectory . '/' . $idCliente . '_NERD_contrato.pdf';
             $contratoPDF->save($contratoPDFPath);
 
-            
-            
+
+
             //Crear el colaborador
             $colaborador = Colaborador::create([
                 'IdDepartamento' => $cliente->IdDepartamento,
@@ -176,7 +207,7 @@ class AdministradorController extends Controller
             $solicitud->update([
                 'Estado' => 'Contratado'
             ]);
-            
+
             DB::beginTransaction();
             DB::commit();
             $correo = new CredencialesNuevoColaborador($colaborador);

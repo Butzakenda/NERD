@@ -38,7 +38,7 @@ Route::get('/',function (){
 Route::get('session/index','SessionController@index')->name('sesion.index');
 //Cliente
     
-    Route::get('session/RegistroActividad/detalles/notificacion-detalles/{noti}/{iduser}', 'SessionController@NotficacionesDetalles')->name('NotficacionesDetalles');
+    Route::get('session/RegistroActividad/detalles/notificacion-detalles/{noti}/{iduser}/{idnotificacion}', 'SessionController@NotficacionesDetalles')->name('NotficacionesDetalles');
     Route::post('session/RegistroActividad/detalles/contrato/{id}','SessionController@DocumentosContrato')->name('documentos.contrato');
     Route::get('session/RegistroActividad/detalles','SessionController@RegistroActividadDetalles')->name('sesion.actividadDetalles');
     Route::get('session/RegistroActividad/{id}','SessionController@RegistroActividad')->name('sesion.actividad');
@@ -51,10 +51,21 @@ Route::get('session/index','SessionController@index')->name('sesion.index');
     Route::post('/update-password', 'ClienteController@updatePassword')->name('cliente.updatePassword');
     //Solicitar ALianza
     Route::get('/solicitar-alianza', 'ClienteController@solicitarAlianzaForm')->name('cliente.solicitarAlianzaForm');
+
+//-----------------
+
+//PQR
+    Route::post('/enviar-pqr', 'AdministradorController@guardarPqr')->name('pqr');
+
+
 //-----------------
 
 //Producto
-Route::get('session/productos','ProductosController@index')->name('productos.index');
+    Route::get('session/productos','ProductosController@index')->name('productos.index');
+    Route::post('/comprar-producto/{idproducto}', 'ProductosController@ComprarProducto')->name('factura');
+    
+//-----------------
+
 //Buscar
 Route::get('/buscar', 'ProductosController@buscar')->name('buscar');
 
@@ -98,6 +109,14 @@ Route::post('/enviar-solicitud-alianza', 'ClienteController@enviarSolicitudAlian
     Route::get('/productos-colaborador/nuevo-producto/{IdColaborador}', 'ColaboradorController@CrearProductoForm')->name('productos.crearForm');
     //Crear el producto
     Route::post('/productos-colaborador/crear-producto/{idColaborador}', 'ColaboradorController@CrearProducto')->name('productos.crear');
+    //Actualizar datos form
+    Route::get('colaborador/edit/{id}','ColaboradorController@edit')->name('colaborador.edit');
+    // Actualizar Datos
+    Route::put('colaborador/update/{id}','ColaboradorController@update')->name('colaborador.update');
+    //Change password form
+    Route::get('/change-password/colaborador', 'ColaboradorController@showChangePasswordForm')->name('colaborador.changePasswordForm');
+    //Actualzar contraseña
+    Route::post('/update-password/colaborador', 'ColaboradorController@updatePassword')->name('colaborador.updatePassword');
 
 /* -------------- */
 Auth::routes();

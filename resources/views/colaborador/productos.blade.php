@@ -36,7 +36,7 @@
                         </td>
                         <td scope="row" class="tablaSolicitudes">
                             <p>
-                                <a href="{{ $seguroMedicoPath }}" target="_blank" class="btn btn-primary">Ver</a>
+                                <a href="" target="_blank" class="btn btn-primary">Ver</a>
                             <p>
                         </td>
                         <td scope="row" class="tablaSolicitudes">

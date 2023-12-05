@@ -1,5 +1,8 @@
 @extends('session')
 
-@section('ContenidoAT')
- Producto
+@section('contenidoAT')
+<h2 class="texto">
+     Factura
+
+ </h2>
 @endsection

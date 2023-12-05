@@ -111,3 +111,8 @@
 .card-btn:active {
     transform: translateY(3px);
 }
+.btn-close .btn-close-custom {
+    color: #ffffff !important; /* Añadir !important para asegurar que se aplique el color blanco */
+    background-color: transparent; /* Fondo transparente (puede cambiarlo según sea necesario) */
+    border: none; /* Sin borde */
+}

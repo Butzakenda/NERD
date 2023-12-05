@@ -42,7 +42,7 @@
             <div class="col-3">
                 @auth
 
-                    <h2>Bienvenido, {{ Auth::user()->name }}</h2>
+                    <h2 class="texto">Bienvenido, {{ Auth::user()->name }}</h2>
                 @endauth
                 <h3></h3>
             </div>

@@ -36,11 +36,14 @@
     @include('partials.header')
     @include('partials.menuindex')
     <div class="contenidoHeader">
+        @if (!request()->is('/'))
+        @else
+            @include('partials.headerIndex')
+        @endif
         @if (!request()->is('session/index'))
         @else
             @include('partials.headerIndex')
         @endif
-
         @yield('contenido')
     </div>
     @include('partials.footer')

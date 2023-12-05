@@ -12,13 +12,13 @@
         </div>
     @endif
     <div class="documentacion">
-        <h2>
+        <h2 class="texto">
             Documentación para contrato - NERD
         </h2>
-        <h6>
+        <h6 class="texto">
             Estimado cliente:
         </h6>
-        <p>
+        <p class="texto">
             Estamos muy felices de contar con tu ayuda en NERD, pero antes debes
             adjuntar unos documentos para finalizar el proceso de contratación.
             Seguramente uno de nuestros empleados te habló de ello durante la entrevista,
@@ -34,7 +34,7 @@
         <form action="{{ route('documentos.contrato', Auth::user()->id) }}" id="documentosForm" method="post"
             enctype="multipart/form-data">
             @csrf
-            <p>Seleccione el seguimiento de producto al que desea llevar los documentos de la siguiente lista desplegable.
+            <p class="texto">Seleccione el seguimiento de producto al que desea llevar los documentos de la siguiente lista desplegable.
                 Aquí encontrará el nombre de los productos que han sido matriculados:
             </p>
 
@@ -51,28 +51,28 @@
 
             <!-- Input para Hoja de Vida -->
             <div class="mb-3">
-                <label for="hojaVida" class="form-label">Selecciona tu Hoja de Vida:</label>
+                <label for="hojaVida" class="form-label texto">Selecciona tu Hoja de Vida:</label>
                 <input type="file" class="form-control" id="hojaVida" name="hojaVida" required>
-                <small class="text-muted">Formatos permitidos: PDF</small>
+                <small class=" texto">Formatos permitidos: PDF</small>
             </div>
 
             <!-- Input para Seguro Médico -->
             <div class="mb-3">
-                <label for="seguroMedico" class="form-label">Selecciona tu Seguro
+                <label for="seguroMedico" class="form-label texto">Selecciona tu Seguro
                     Médico:</label>
                 <input type="file" class="form-control" id="seguroMedico" name="seguroMedico" required>
-                <small class="text-muted">Formatos permitidos: PDF</small>
+                <small class=" texto">Formatos permitidos: PDF</small>
             </div>
 
             <!-- Input para Documento de Identificación -->
             <div class="mb-3">
-                <label for="documentoIdentificacion" class="form-label">Selecciona tu
+                <label for="documentoIdentificacion" class="form-label texto">Selecciona tu
                     Documento
                     de
                     Identificación:</label>
                 <input type="file" class="form-control" id="documentoIdentificacion" name="documentoIdentificacion"
                     required>
-                <small class="text-muted">Formatos permitidos: PDF</small>
+                <small class=" texto">Formatos permitidos: PDF</small>
             </div>
             <button class="btn btn-primary">Enviar Documentos</button>
         </form>

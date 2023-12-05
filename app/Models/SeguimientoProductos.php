@@ -26,5 +26,9 @@ class SeguimientoProductos extends Model
     {
         return $this->hasMany(Contrato::class, 'IdSeguimientoProductos');
     }
+    public function producto()
+    {
+        return $this->hasMany(Producto::class, 'IdSeguimientoProductos');
+    }
     
 }

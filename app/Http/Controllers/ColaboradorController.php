@@ -16,9 +16,7 @@ use Illuminate\Support\Facades\DB;
 
 class ColaboradorController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function mostrarFormularioRegistro($idColaborador)
     {
 
@@ -71,6 +69,8 @@ class ColaboradorController extends Controller
     public function CrearProducto(Request $request, $id)
     {
         try {
+            $nombreArchivo = null;
+            $rutaFoto = null;
             $colaborador = Colaborador::where('user_id', $id)
                 ->with('ciudad')
                 ->with('departamento')
@@ -96,18 +96,21 @@ class ColaboradorController extends Controller
                 File::makeDirectory($productoDirectory, 0755, true);
             }
             $fotoProducto = $request->file('fotoProductoInput');
-            
+
             if ($fotoProducto) {
                 // Generar un nombre único para el archivo
                 $nombreArchivo = time() . '_' . $fotoProducto->getClientOriginalName();
-            
                 // Guardar la foto en la ruta específica
                 $rutaFoto = $productoDirectory . '/' . $nombreArchivo;
+
                 $fotoProducto->move($productoDirectory, $nombreArchivo);
             }
-            $fotoPath = $productoDirectory . '/' . $IdColaborador . $nombreArchivo ;
-            
-            
+
+            $fotoPath = $rutaFoto;
+
+
+
+
             $producto = Producto::Create([
                 'IdSeguimientoProductos' => $idSeguimiento,
                 'IdDepartamento' => $request['departamentoProductoInput'],
@@ -168,9 +171,12 @@ class ColaboradorController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($user_id)
     {
-        //
+        $user = User::find($user_id);
+        $colaborador = $user->colaborador;
+        /* dd($cliente); */
+        return view('colaborador.edit', compact('colaborador'));
     }
 
     /**
@@ -178,9 +184,73 @@ class ColaboradorController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
-    }
+        try {
+            // Validar los campos proporcionados por el usuario
+            $colaborador = Colaborador::findOrFail($id);
 
+            // Validar y actualizar cada campo uno por uno si no es nulo
+            if (!is_null($request->input('ActualizarNombreCliente'))) {
+                $colaborador->update(['Nombres' => $request->input('ActualizarNombreCliente')]);
+            }
+
+            if (!is_null($request->input('ActualizarApellidosCliente'))) {
+                $colaborador->update(['Apellidos' => $request->input('ActualizarApellidosCliente')]);
+            }
+
+            if (!is_null($request->input('ActualizarTelefonoCliente'))) {
+                $colaborador->update(['Telefono' => $request->input('ActualizarTelefonoCliente')]);
+            }
+            if (!is_null($request->input('ActualizarCorreoCliente'))) {
+                $colaborador->update(['CorreoELectronico' => $request->input('ActualizarCorreoCliente')]);
+            }
+            if (!is_null($request->input('ActualizarDocumentoCliente'))) {
+                $colaborador->update(['Documento' => $request->input('ActualizarDocumentoCliente')]);
+            }
+            if (!is_null($request->input('ActualizarFechaNaciCliente'))) {
+                $colaborador->update(['FechaNacimiento' => $request->input('ActualizarFechaNaciCliente')]);
+            }
+            DB::beginTransaction();
+            DB::commit();
+            session()->forget('success_message');
+            session()->flash('success_message', '¡Se ha actualizado el perfil!');
+            session()->put('flash_lifetime', now()->addSeconds(5));
+            return redirect()->back();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            session()->forget('error_message');
+            session()->flash('error_message', 'Se produjo un error al procesar la solicitud.');
+            session()->put('flash_lifetime', now()->addSeconds(5));
+            return redirect()->back();
+        }
+    }
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required',
+            'new_password' => 'required|string|min:8|confirmed',
+        ]);
+
+        $user = Auth::user();
+
+        if (Hash::check($request->current_password, $user->password)) {
+            $user->update([
+                'password' => Hash::make($request->new_password),
+            ]);
+
+            return redirect()->route('cliente.changePasswordForm')->with('success', 'Contraseña actualizada correctamente.');
+        } else {
+            return redirect()->route('cliente.changePasswordForm')->with('error', 'La contraseña actual no coincide.');
+        }
+    }
+    /**
+     * Remove the specified resource from storage.
+     */
+
+    public function showChangePasswordForm()
+    {
+        //
+        return view('colaborador.change-password');
+    }
     /**
      * Remove the specified resource from storage.
      */

@@ -25,7 +25,7 @@
                                 Descripción: {{ $noti->Descripcion }}
                             </p>
                             <div class="actions">
-                                <form action="{{ route('NotficacionesDetalles',[$noti->Tipo, Auth::user()->id]) }}" method="get">
+                                <form action="{{ route('NotficacionesDetalles',[$noti->Tipo, Auth::user()->id, $noti->IdNotificacion]) }}" method="get">
                                     @csrf
                                     <button type="submit" class="btn btn-primary read">
                                         Más detalles
@@ -37,7 +37,15 @@
                             </div>
                         </div>
                     </div>
+                    
                 @endforeach
+            </div>
+            <div class="row">
+                <div class="col-6 ">
+                    <div class="col-6">
+                        {{ $notificaciones->links('pagination::bootstrap-4') }} <!-- Muestra los enlaces de paginación -->
+                    </div>
+                </div>
             </div>
         </div>
     @endisset

@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         //
-        Schema::table('pqrs', function (Blueprint $table) {
-            $table->unsignedBigInteger('IdAdministrador')->after('IdCliente')->nullable();
+        Schema::table('notificaciones', function (Blueprint $table) {
+            $table->unsignedBigInteger('IdFactura')->after('IdSolicitud')->nullable();
         });
     }
 
@@ -23,8 +23,8 @@ return new class extends Migration
     public function down(): void
     {
         //
-        Schema::table('pqrs', function (Blueprint $table) {
-            $table->dropColumn('IdAdministrador');
+        Schema::table('notificaciones', function (Blueprint $table) {
+            $table->dropColumn('IdFactura');
         });
     }
 };

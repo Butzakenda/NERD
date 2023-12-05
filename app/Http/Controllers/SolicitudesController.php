@@ -325,11 +325,17 @@ class SolicitudesController extends Controller
                     'IdAdministrador' => $admin->administrador->IdAdministrador,
                 ]);
             }
+            session()->forget('success_message');
+            session()->flash('success_message', 'Se ha actualizado el estado de la solicitud.');
+            session()->put('flash_lifetime', now()->addSeconds(5));
             return redirect()->back();
         } catch (\Exception $e) {
             // Manejo de errores
-            dd($e->getMessage());
+            session()->forget('error_message');
+            session()->flash('error_message', 'Se produjo un error al procesar la solicitud.');
+            session()->put('flash_lifetime', now()->addSeconds(5));
             return redirect()->back();
+            
         }
         
     }

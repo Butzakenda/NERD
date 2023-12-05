@@ -20,39 +20,34 @@
             </div>
         @endif
         <h2  style="color: white" >Actualizar datos</h2>
-        @if(session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
         <div class="row">
             <div class="col-12 mb-5">
-                <form method="POST" action="{{ route('cliente.update', $cliente->IdCliente) }}">
+                <form method="POST" action="{{ route('colaborador.update', $colaborador->IdColaborador) }}">
                     @csrf
                     @method('PUT')
                     <div class="row form-group">
                         <label style="color: white" class="form-label"   >Nombre:</label>
-                        <input class="form-control" type="text" name="ActualizarNombreCliente" value="" placeholder="{{$cliente->Nombres}}">
+                        <input class="form-control" type="text" name="ActualizarNombreCliente" value="" placeholder="{{$colaborador->Nombres}}">
                     </div>
                     <div class="row form-group">
                         <label  style="color: white" class="form-label" >Apellidos:</label>
-                        <input class="form-control" type="text" name="ActualizarApellidosCliente" value="" placeholder="{{$cliente->Apellidos}}">
+                        <input class="form-control" type="text" name="ActualizarApellidosCliente" value="" placeholder="{{$colaborador->Apellidos}}">
                     </div>
                     <div class="row form-group">
                         <label  style="color: white" class="form-label" >Teléfono:</label>
-                        <input class="form-control" type="text" name="ActualizarTelefonoCliente" value="" placeholder="{{$cliente->Telefono}}">
+                        <input class="form-control" type="text" name="ActualizarTelefonoCliente" value="" placeholder="{{$colaborador->Telefono}}">
                     </div>
                     <div class="row form-group">
                         <label  style="color: white" class="form-label" >Correo Electrónico:</label>
-                        <input class="form-control" type="text" name="ActualizarCorreoCliente" value="" placeholder="{{$cliente->CorreoELectronico}}">
+                        <input class="form-control" type="text" name="ActualizarCorreoCliente" value="" placeholder="{{$colaborador->CorreoELectronico}}">
                     </div>
                     <div class="row form-group">
                         <label  style="color: white" class="form-label" >Número de documento:</label>
-                        <input class="form-control" type="text" name="ActualizarDocumentoCliente" value="" placeholder="{{$cliente->Documento}}">
+                        <input class="form-control" type="text" name="ActualizarDocumentoCliente" value="" placeholder="{{$colaborador->Documento}}">
                     </div>
                     <div class="row form-group">
                         <label  style="color: white" class="form-label" >Fecha de nacimiento:</label>
-                        <input class="form-control" type="date" name="ActualizarFechaNaciCliente" value="{{$cliente->FechaNacimiento}}">
+                        <input class="form-control" type="date" name="ActualizarFechaNaciCliente" value="{{$colaborador->FechaNacimiento}}">
                     </div>
                     <br>
                     <!-- Agrega aquí los campos que deseas editar -->

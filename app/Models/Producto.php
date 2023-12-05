@@ -9,9 +9,9 @@ class Producto extends Model
     protected $fillable = ['IdSeguimientoProductos', 'IdDepartamento', 'IdCiudad', 'IdCategoria', 'IdColaborador', 'Nombre', 'Precio', 'Descripcion','Foto'];
     protected $primaryKey = 'IdProducto';
     protected $table = 'productos';
-    public function inscribirProducto()
+    public function seguimiento()
     {
-        return $this->belongsTo(InscribirProducto::class, 'IdInscribirProducto');
+        return $this->belongsTo(SeguimientoProductos::class, 'IdSeguimientoProductos');
     }
 
     public function categoria()
