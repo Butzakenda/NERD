@@ -67,7 +67,7 @@ Route::get('session/index','SessionController@index')->name('sesion.index');
 //-----------------
 
 //Buscar
-Route::get('/buscar', 'ProductosController@buscar')->name('buscar');
+Route::get('/buscar', 'ProductosController@index')->name('buscar');
 
 
 Route::post('/enviar-solicitud-alianza', 'ClienteController@enviarSolicitudAlianza')->name('cliente.enviarSolicitudAlianza');

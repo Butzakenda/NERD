@@ -34,15 +34,17 @@
         <form action="{{ route('documentos.contrato', Auth::user()->id) }}" id="documentosForm" method="post"
             enctype="multipart/form-data">
             @csrf
-            <p class="texto">Seleccione el seguimiento de producto al que desea llevar los documentos de la siguiente lista desplegable.
+            <p class="texto">Seleccione el seguimiento de producto al que desea llevar los documentos de la siguiente lista
+                desplegable.
                 Aquí encontrará el nombre de los productos que han sido matriculados:
             </p>
 
-
             @isset($seguimientos)
+            
                 <select name="seguimiento_id" id="seguimiento_id" class="form-select">
-                    @foreach ($seguimientos as $seguimiento)
-                        <option value=" {{ $seguimiento->solicitud->IdSolicitud }} "> {{ $seguimiento->solicitud->Nombre }}
+                    @foreach ($seguimientos as $seguimientos)
+                    
+                        <option value=" {{ $seguimientos->IdSeguimientoProductos }} "> {{ $seguimientos->solicitud->Nombre }}
                         </option>
                     @endforeach
                 </select>

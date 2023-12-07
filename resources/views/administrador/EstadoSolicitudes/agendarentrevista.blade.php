@@ -18,7 +18,7 @@
             </p>
             @foreach ($DetalleSolicitud->solicitudes as $solicitud)
                 <form action="{{ route('solicitudes.agendarReunion', [$solicitud->IdSolicitud,$DetalleSolicitud->IdCliente]) }}">
-                    <button>Agendar Cita</button>
+                    <button class="btn btn-outline-light">Agendar Cita</button>
                 </form>
             @endforeach
         @endisset

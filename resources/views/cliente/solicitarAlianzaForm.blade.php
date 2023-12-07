@@ -18,24 +18,31 @@
     @endif
     <form action="{{ route('cliente.crearSolicitudAlianza') }}" method="post">
         @csrf
-        <h1 style="color: white" >Solicitud de Alianza</h1>
-        <p style="color: white" >Hola, esta es una solicitud de alianza:</p>
-        <p style="color: white" ><strong>Datos del cliente:</strong></p>
-        <p style="color: white" >Nombre: {{ $clienteSA->Nombres }} </p>
-        <p style="color: white" >Apellidos: {{ $clienteSA->Apellidos }} </p>
-        <p style="color: white" >Correo electrónico: {{ $clienteSA->CorreoELectronico }}</p>
+        <h1 style="color: white">Solicitud de Alianza</h1>
+        <p style="color: white">Hola, esta es una solicitud de alianza:</p>
+        <p style="color: white"><strong>Datos del cliente:</strong></p>
+        <p style="color: white">Nombre: {{ $clienteSA->Nombres }} </p>
+        <p style="color: white">Apellidos: {{ $clienteSA->Apellidos }} </p>
+        <p style="color: white">Correo electrónico: {{ $clienteSA->CorreoELectronico }}</p>
         @if (!empty($clienteSA->Telefono))
-            <p style="color: white" >Teléfono: {{ $clienteSA->Telefono }} </p>
+            <p style="color: white">Teléfono: {{ $clienteSA->Telefono }} </p>
         @else
-            <p style="color: white" >Teléfono: Debes asignar un Teléfono a tu cuenta, puedes actualizarlo desde la barra lateral izquierda en el
+            <p style="color: white">Teléfono: Debes asignar un Teléfono a tu cuenta, puedes actualizarlo desde la barra
+                lateral izquierda en el
                 Área de Trabajo</p>
         @endif
 
-        <label style="color: white"  for="">Nombre del producto</label>
+        <label style="color: white" for="">Nombre del producto</label>
         <input type="text" class="form-control" name="nombreProductoSA">
-        <p style="color: white" ><strong>Descripción del producto o servicio:</strong></p>
+        <p style="color: white"><strong>Descripción del producto o servicio:</strong></p>
         <textarea name="descripcionProductoSA" class="form-control" id="" cols="30" rows="10" value="">{{ $descripcion }}</textarea>
         <br>
-        <button class="btn btn-primary " type="submit">Enviar Solicitud</button>
+        @if ($clienteSA->Telefono)
+            <button class="btn btn-primary " type="submit">Enviar Solicitud</button>
+        @else
+            <p>
+                Debes asignar un número de teléfono antes de continuar
+            </p>
+        @endif
     </form>
 @endsection

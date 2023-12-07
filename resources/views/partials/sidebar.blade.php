@@ -1,4 +1,4 @@
-<div class="wrapper" id="sidebarWrapper">
+<div class="wrapper my-3" id="sidebarWrapper">
     <!-- Sidebar  -->
     @auth
         <nav id="sidebar">
@@ -26,11 +26,9 @@
                     </li>
                 @elseif(Auth::user()->tipo == 'Administrador')
                     <li>
-                        <a class="nava" href="">Crear Nuevo Administrador</a>
+                        <a class="nava" href="#">Crear Nuevo Administrador</a>
                     </li>
-                    <li>
-                        <a class="nava" href="{{ route('administrador.create') }}">Crear Nuevo Colaborador</a>
-                    </li>
+
                     <li>
                         <a class="nava" href="">Dashboard</a>
                     </li>

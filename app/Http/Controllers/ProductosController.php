@@ -19,14 +19,34 @@ class ProductosController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $productos = null;
 
-        $productos = Producto::orderBy('IdProducto', 'DESC')
-            ->with('colaborador')
-            ->with('seguimiento')
-            ->paginate(20);
         $fotoPathconNombre = null;
+
+        $busqueda = $request->input('buscar');
+
+        if ($busqueda == null) {
+            $productos = Producto::orderBy('IdProducto', 'DESC')
+                ->with('colaborador')
+                ->with('seguimiento')
+                ->paginate(20);
+        } else {
+            $productos = Producto::where('Nombre', 'LIKE', "%$busqueda%")
+                ->orWhereHas('colaborador.ciudad', function ($query) use ($busqueda) {
+                    $query->where('Nombre', 'LIKE', "%$busqueda%");
+                })
+                ->orWhereHas('colaborador.departamento', function ($query) use ($busqueda) {
+                    $query->where('Nombre', 'LIKE', "%$busqueda%");
+                })
+                ->orWhere('Descripcion', 'LIKE', "%$busqueda%")
+                ->paginate(20)
+                ->appends(['buscar' => $busqueda]);
+        }
+
+        
+
         $productos->each(function ($producto) {
             $nombreArchivoEnDB = null;
             //El producto tiene seguimiento
@@ -52,7 +72,7 @@ class ProductosController extends Controller
                 }
             }
         });
-        return view('producto.index', compact('productos', 'fotoPathconNombre'));
+        return view('producto.index', compact('productos', 'fotoPathconNombre','busqueda'));
     }
 
     public function buscar(Request $request)
@@ -67,10 +87,35 @@ class ProductosController extends Controller
                 $query->where('Nombre', 'LIKE', "%$busqueda%");
             })
             ->orWhere('Descripcion', 'LIKE', "%$busqueda%")
-            ->paginate(5)
+            ->paginate(20)
             ->appends(['buscar' => $busqueda]);
+        $fotoPathconNombre = null;
+        $resultados->each(function ($producto) {
+            $nombreArchivoEnDB = null;
+            //El producto tiene seguimiento
+            //dd($producto);
+            if ($producto->seguimiento) {
+                $fotoPath = public_path('colaboradores/Products-' . $producto->colaborador->IdColaborador . '/producto-' . $producto->seguimiento->IdSeguimientoProductos);
+                $folder = (File::isDirectory($fotoPath));
+                if ($folder) {
+                    $nombreArchivoEnDB = basename($producto->Foto);
+                    $rutaRelativa = str_replace(public_path(), '', $fotoPath);
 
-        return view('producto.resultados', compact('resultados', 'busqueda'));
+                    $fotoPathconNombre = $rutaRelativa . '/' . $nombreArchivoEnDB;
+                    $fotoPathconNombre = ltrim($fotoPathconNombre, '\\');
+                    //dd($fotoPathconNombre);
+
+                    $producto->fotoPathConNombre = $fotoPathconNombre;
+
+
+                    // Asignar valor solo si $fotoPathconNombre está definido
+                    if (!is_null($fotoPathconNombre)) {
+                        $fotoPathconNombre = $rutaRelativa . '/' . $nombreArchivoEnDB;
+                    }
+                }
+            }
+        });
+        return view('producto.resultados', compact('resultados', 'busqueda', 'fotoPathconNombre'));
     }
     public function ComprarProducto(Request $request, $idproducto)
     {
@@ -97,7 +142,7 @@ class ProductosController extends Controller
                 'Total' => $producto->Precio,
             ]);
         }
-        
+
         //Notificar al cliente
         $notificacionCliente = Notificaciones::create([
             'IdCliente' => $idCliente,
@@ -106,7 +151,7 @@ class ProductosController extends Controller
             'Descripcion' => 'Recientemente has adquirido un producto. Presiona en Más detalles para saber más al respecto.',
             'IdFactura'  =>  $factura->IdFactura
         ]);
-        
+
         //Notificar al colaborador
         $notificacionesColaborador = Notificaciones::create([
             'IdColaborador' => $producto->IdColaborador,

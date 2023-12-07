@@ -117,7 +117,8 @@ class SessionController extends Controller
             $DocumentPDFPath = $contratoDirectory . DIRECTORY_SEPARATOR . $documentoIdentificacionFileName;
 
             $seguimientoId = $request->input('seguimiento_id');
-
+            
+        
             //Crear el contrato
             Contrato::create([
                 'IdSeguimientoProductos' =>  $seguimientoId,
@@ -168,11 +169,10 @@ class SessionController extends Controller
 
             $seguimientos = SeguimientoProductos::where('IdCliente', $cliente->IdCliente)
                 ->with(['Cliente', 'solicitud' => function ($query) {
-
                     $query->select('IdSolicitud', 'Nombre');
                 }])
                 ->get();
-
+            
             if ($noti == 'Entrevista Avalada') {
                 $vistaNoti = 'EntrevistaAvalada';
             } elseif ($noti == 'Solicitud Alianza') {

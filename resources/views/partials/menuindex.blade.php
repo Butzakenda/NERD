@@ -45,10 +45,10 @@
 
             {{-- {{dd(Request::is('sesion.index') || Request::is('productos.index'))}} --}}
             {{-- @if (Request::is('sesion.index') || Request::is('productos.index')) --}}
-            <form class="d-flex" role="search" method="GET" action="{{ route('buscar') }}">
+            <form class="d-flex" role="search" method="GET" action="{{ route('productos.index') }}">
                 <input name="buscar" class="form-control me-2" type="search" placeholder="Buscar" aria-label="Buscar"
                     value="{{ $busqueda ?? '' }}">
-                <button style="color: white; border: 1px solid white" class="btn btn-outline-success"
+                <button style="color: white; border: 1px solid white; margin-right: 15px;" class="btn btn-outline-success"
                     type="submit">Buscar</button>
             </form>
             {{-- @endif --}}
@@ -60,15 +60,16 @@
                 <div class="LoginAuth sm:fixed sm:top-0 sm:right-0 p-6 text-right z-10">
                     @auth
                         <a href="{{ url('/session') }}"
-                            class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Área
-                            de Trabajo</a>
+                            class="btn btn-outline-success font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
+                            ">
+                            Área de Trabajo</a>
                     @else
                         <a href="{{ route('login.index') }}"
-                            class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Log
+                            class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500 btn btn-outline-success " style="margin-right: 5px;">Log
                             in</a>
                         @if (Route::has('register'))
                             <a href="{{ route('departamentos.index') }}"
-                                class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Register</a>
+                                class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500 btn btn-outline-success">Register</a>
                         @endif
                     @endauth
                 </div>

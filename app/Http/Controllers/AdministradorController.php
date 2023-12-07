@@ -73,10 +73,10 @@ class AdministradorController extends Controller
     public function showSolicitudes()
     {
         //
-        $solicitudes = Solicitud::OrderBy('Fecha', 'ASC')
+        $solicitudes = Solicitud::OrderBy('IdSolicitud', 'desc')
             ->with('Cliente')
             ->with('administrador')
-            ->get();
+            ->paginate(8);
         return view('Administrador.solicitudes', compact('solicitudes'));
     }
     public function showSolicitudesDetalles(string $id, $idsolicitud)
@@ -92,9 +92,10 @@ class AdministradorController extends Controller
         $SeguimientoSolicitud = SeguimientoProductos::where('IdSeguimientoProductos', $Solicitud->IdSeguimientoProductos)
             ->with('contratos')
             ->get();
-        $hojaVidaPath = asset('pdfs/Documents-' . $id . '/contrato/23_hoja_vida.pdf');
-        $seguroMedicoPath = asset('pdfs/Documents-' . $id . '/contrato/23_seguro_medico.pdf');
-        $documentoIdentificacionPath = asset('pdfs/Documents-' . $id . '/contrato/23_copia_cedula.pdf');
+        
+        $hojaVidaPath = asset('pdfs/Documents-' . $id . '/contrato/' . $id .'_hoja_vida.pdf');
+        $seguroMedicoPath = asset('pdfs/Documents-' . $id . '/contrato/' . $id . '_seguro_medico.pdf');
+        $documentoIdentificacionPath = asset('pdfs/Documents-' . $id . '/contrato/' . $id . '_copia_cedula.pdf');
 
         // Obtener las notificaciones del cliente
         $notificacionesCliente = Notificaciones::where('IdCliente', $id)->first();
@@ -156,11 +157,11 @@ class AdministradorController extends Controller
             $cliente = Cliente::where('IdCliente', $idcliente)->first();
             //Hallar el seguimiento asocioado
             $seguimiento = SeguimientoProductos::where('IdSeguimientoProductos', $idseguimiento)->first();
-
+    
             $solicitud = Solicitud::where('IdSolicitud', $seguimiento->IdSolicitud)->first();
-
+    
             $contrato = Contrato::where('IdSeguimientoProductos', $seguimiento->IdSeguimientoProductos)->first();
-
+    
             // Definir el directorio base
             $pdfBaseDirectory = public_path('pdfs');
             // Obtener el ID del cliente
@@ -177,13 +178,13 @@ class AdministradorController extends Controller
             if (!File::isDirectory($contratoDirectory)) {
                 File::makeDirectory($contratoDirectory, 0755, true);
             }
-
+    
             $contratoPDF = PDF::loadView('administrador.pdfs.contrato', ['cliente' => $cliente]);
             $contratoPDFPath = $contratoDirectory . '/' . $idCliente . '_NERD_contrato.pdf';
             $contratoPDF->save($contratoPDFPath);
-
-
-
+    
+    
+    
             //Crear el colaborador
             $colaborador = Colaborador::create([
                 'IdDepartamento' => $cliente->IdDepartamento,
@@ -199,7 +200,7 @@ class AdministradorController extends Controller
                 'Contrato' => $contratoPDFPath,
                 'IdColaborador' => $colaborador->IdColaborador,
             ]);
-
+    
             //Actualizar el seguimiento
             $seguimiento->update([
                 'IdColaborador' => $colaborador->IdColaborador,
@@ -207,7 +208,7 @@ class AdministradorController extends Controller
             $solicitud->update([
                 'Estado' => 'Contratado'
             ]);
-
+    
             DB::beginTransaction();
             DB::commit();
             $correo = new CredencialesNuevoColaborador($colaborador);

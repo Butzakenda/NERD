@@ -16,7 +16,7 @@
         <h1>Productos</h1>
         @isset($productos)
             <div class="container">
-                <div class="row mr-md-3 row-cols-lg-5 g-4">
+                <div class="row mr-md-3 g-4">
                     @foreach ($productos as $index => $producto)
                         <div class="col">
                             <div class="card ">

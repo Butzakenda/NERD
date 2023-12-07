@@ -2,21 +2,34 @@
 
 @section('contenidoAT')
     <link rel="stylesheet" href=" {{ asset('css/Productos.css') }} ">
-
-
     @if ($resultados->isEmpty())
         <p class="texto">No se encontraron resultados</p>
     @else
         <div class="container w-100">
             <h1 class="texto">Resultado de la búsqueda</h1>
+            @if (session('success_message') && now() <= session('flash_lifetime'))
+                <div class="alert alert-success">
+                    {{ session('success_message') }}
+                </div>
+            @endif
+            @if (session('error_message') && now() <= session('flash_lifetime'))
+                <div class="alert alert-warning">
+                    {{ session('error_message') }}
+                </div>
+            @endif
             @isset($resultados)
-                @foreach ($resultados as $producto)
+                @foreach ($resultados as $index => $producto)
                     <div class="container w-100">
                         <div class="row mr-md-3 row-cols-lg-5 g-4">
                             <div class="col">
                                 <div class="card ">
-                                    <img src="{{ asset('img/man.png') }}" class="card-img-top card-img" alt="User Image"
-                                        style="object-fit: contain; height: 100px;">
+                                    @if (!is_null($producto->fotoPathConNombre))
+                                        <img src="{{ asset($producto->fotoPathConNombre) }}" class="card-img-top card-img"
+                                            alt="User Image" style="object-fit: contain; height: 100px;">
+                                    @else
+                                        <img src="{{ asset('img/man.png') }}" class="card-img-top card-img" alt="User Image"
+                                            style="object-fit: contain; height: 100px;">
+                                    @endif
                                     <div class="card-body">
                                         <h5 class="card-title">{{ $producto->Nombre }}</h5>
                                         <div id="card-text">
@@ -25,7 +38,8 @@
                                     </div>
                                     <div class="card-footer">
                                         <span class="text-muted">$ {{ $producto->Precio }}</span>
-                                        <button class="card-btn">
+                                        <button class="card-btn" data-bs-toggle="modal"
+                                            data-bs-target="#compraProductoBuscar{{ $index }}">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                                                 <path
                                                     d="m397.78 316h-205.13a15 15 0 0 1 -14.65-11.67l-34.54-150.48a15 15 0 0 1 14.62-18.36h274.27a15 15 0 0 1 14.65 18.36l-34.6 150.48a15 15 0 0 1 -14.62 11.67zm-193.19-30h181.25l27.67-120.48h-236.6z">
@@ -46,6 +60,7 @@
                             </div>
                         </div>
                     </div>
+                    @include('partials.modalProductoBuscar')
                 @endforeach
                 <div class="row">
                     <div class="col-6 ">

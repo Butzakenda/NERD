@@ -27,7 +27,7 @@
 
     <link rel="stylesheet" href=" {{ asset('css/branchHeader.css') }} ">
     <link rel="stylesheet" href=" {{ asset('css/sidebar.css') }} ">
-    
+
 
 </head>
 
@@ -39,13 +39,7 @@
             <div class="col-9">
 
             </div>
-            <div class="col-3">
-                @auth
-
-                    <h2 class="texto">Bienvenido, {{ Auth::user()->name }}</h2>
-                @endauth
-                <h3></h3>
-            </div>
+            
 
         </div>
         <div class="d-flex">
@@ -54,7 +48,9 @@
             <!-- Sidebar -->
             @if (!request()->is('session/productos'))
                 @include('partials.sidebar')
+            
             @endif
+            
 
 
 

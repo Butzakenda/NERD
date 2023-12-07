@@ -37,7 +37,7 @@
                                     <div class="row">
                                         <div class="col-md-6 mb-4">
                                             <div class="form-outline">
-                                                <input type="text" id="form3Example1" name="NombresClienteInput"
+                                                <input required type="text" id="form3Example1" name="NombresClienteInput"
                                                     class="form-control @error('NombresClienteInput') is-invalid @enderror"
                                                     value="{{ old('NombresClienteInput') }}" />
                                                 <label class="form-label" for="">Nombres *</label>
@@ -50,7 +50,7 @@
                                         </div>
                                         <div class="col-md-6 mb-4">
                                             <div class="form-outline">
-                                                <input type="text" id="form3Example2" name="ApellidosClienteInput"
+                                                <input required type="text" id="form3Example2" name="ApellidosClienteInput"
                                                     class="form-control @error('ApellidosClienteInput') is-invalid @enderror"
                                                     value="{{ old('ApellidosClienteInput') }}" />
                                                 <label class="form-label" for="form3Example2">Apellidos *</label>
@@ -68,13 +68,13 @@
                                                 <label class="form-label" for="form3Example1">Tipo de documento *</label>
                                                 <div class="form-check">
                                                     <input class="form-check-input" name="tipoDocumentoClienteInput"
-                                                        type="radio" name="tipoDocumento" value="Cédula de Ciudadanía">
+                                                        type="radio" name="tipoDocumento" value="Cédula de Ciudadanía" required>
                                                     <label class="form-check-label" for="">Cédula de
                                                         Ciudadanía</label>
                                                 </div>
                                                 <div class="form-check">
                                                     <input type="radio" class="form-check-input"
-                                                        name="tipoDocumentoClienteInput" value="Cédula de Extranjería">
+                                                        name="tipoDocumentoClienteInput" value="Cédula de Extranjería" required>
                                                     <label class="form-check-label" for="">Cédula de
                                                         Extranjería</label>
                                                 </div>
@@ -88,7 +88,7 @@
                                         </div>
                                         <div class="col-md-6 mb-4">
                                             <div class="form-outline">
-                                                <input type="text" id="form3Example2" name="numDocumentoClienteInput"
+                                                <input required type="text" id="form3Example2" name="numDocumentoClienteInput"
                                                     class="form-control @error('numDocumentoClienteInput') is-invalid @enderror"
                                                     value="{{ old('numDocumentoClienteInput') }}" />
                                                 <label class="form-label" for="form3Example2">Número de documento *</label>
@@ -101,7 +101,7 @@
                                         </div>
                                     </div>
                                     <div class="form-outline mb-4">
-                                        <input type="date" id=""
+                                        <input type="date" id="" required
                                             class="form-control FechaNacimientoClienteInput @error('FechaNacimientoClienteInput') is-invalid @enderror"
                                             name="FechaNacimientoClienteInput"
                                             value="{{ old('FechaNacimientoClienteInput') }}" />
@@ -113,14 +113,14 @@
                                         @enderror
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-6 mb-4">
+                                        <div class="col mb-4">
                                             <div class="form-outline">
                                                 {{-- name="DepartamentoClienteInput" class="form-control @error('DepartamentoClienteInput') is-invalid @enderror" value="{{ old('DepartamentoClienteInput') }}" --}}
                                                 <label class="form-label" for="">Departamento de Residencia
                                                     *</label>
                                                 <select name="departamentoClienteInput" id="departamentoClienteInput"
-                                                    class="@error('departamentoClienteInput') is-invalid @enderror"
-                                                    value="{{ old('departamentoClienteInput') }}">
+                                                    class="form-control @error('departamentoClienteInput') is-invalid @enderror"
+                                                    value="{{ old('departamentoClienteInput') }}" required>
                                                     <option value="">Seleccione un departamento</option>
                                                     @foreach ($departamentos as $departamento)
                                                         <option value=" {{ $departamento->IdDepartamento }} ">
@@ -140,7 +140,7 @@
                                                 {{-- name="DepartamentoClienteInput" class="form-control @error('DepartamentoClienteInput') is-invalid @enderror" value="{{ old('DepartamentoClienteInput') }}" --}}
                                                 <label class="form-label" for="">Ciudad de Residencia*</label>
                                                 <select name="ciudadClienteInput" id="ciudadClienteInput"
-                                                    class="@error('ciudadClienteInput') is-invalid @enderror"
+                                                    class="form-control @error('ciudadClienteInput') is-invalid @enderror"
                                                     value="{{ old('ciudadClienteInput') }}">
                                                     <option value="">Seleccione una ciudad</option>
                                                 </select>
@@ -165,7 +165,7 @@
                                             @enderror
                                         </div>
                                         <div class="form-outline mb-4">
-                                            <input type="email" id="form3Example3" name="telefonoClienteInput"
+                                            <input type="text" id="form3Example3" name="telefonoClienteInput"
                                                 class="form-control" />
                                             <label class="form-label" for="form3Example3">Teléfono</label>
                                             @error('telefonoClienteInput')
