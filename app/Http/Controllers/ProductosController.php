@@ -45,7 +45,7 @@ class ProductosController extends Controller
                 ->appends(['buscar' => $busqueda]);
         }
 
-        
+
 
         $productos->each(function ($producto) {
             $nombreArchivoEnDB = null;
@@ -72,7 +72,8 @@ class ProductosController extends Controller
                 }
             }
         });
-        return view('producto.index', compact('productos', 'fotoPathconNombre','busqueda'));
+        
+        return view('producto.index', compact('productos', 'fotoPathconNombre', 'busqueda'));
     }
 
     public function buscar(Request $request)

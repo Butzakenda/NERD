@@ -32,52 +32,46 @@
                 <li class="nav-item">
                     <a class="nav-link" href=" {{ route('productos.index') }} ">Productos</a>
                 </li>
-                <li class="nav-item">
-                    <button class="btn btn-link nav-link" data-bs-toggle="modal" data-bs-target="#modalPQR">PQR</button>
-                </li>
+                @auth
+                    <li class="nav-item">
+                        <button class="btn btn-link nav-link" data-bs-toggle="modal" data-bs-target="#modalPQR">PQR</button>
+                    </li>
+                @endauth
 
                 <li class="nav-item">
-
-            </ul>
-            </li>
             </ul>
 
-
-            {{-- {{dd(Request::is('sesion.index') || Request::is('productos.index'))}} --}}
-            {{-- @if (Request::is('sesion.index') || Request::is('productos.index')) --}}
             <form class="d-flex" role="search" method="GET" action="{{ route('productos.index') }}">
                 <input name="buscar" class="form-control me-2" type="search" placeholder="Buscar" aria-label="Buscar"
                     value="{{ $busqueda ?? '' }}">
-                <button style="color: white; border: 1px solid white; margin-right: 15px;" class="btn btn-outline-success"
-                    type="submit">Buscar</button>
+                <button style="color: white; border: 1px solid white; margin-right: 15px;"
+                    class="btn btn-outline-success" type="submit">Buscar</button>
             </form>
-            {{-- @endif --}}
-
-
         </div>
         <div class="ContainerLoginAuth d-flex">
             @if (Route::has('login'))
                 <div class="LoginAuth sm:fixed sm:top-0 sm:right-0 p-6 text-right z-10">
                     @auth
                         <a href="{{ url('/session') }}"
-                            class="btn btn-outline-success font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
-                            ">
-                            Área de Trabajo</a>
-                    @else
-                        <a href="{{ route('login.index') }}"
-                            class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500 btn btn-outline-success " style="margin-right: 5px;">Log
-                            in</a>
-                        @if (Route::has('register'))
+                            class="btn btn-outline-success font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500" ">
+                                                            Área de Trabajo
+                                                        </a>
+@else
+    <a href="{{ route('login.index') }}"
+                                                            class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500 btn btn-outline-success " style="margin-right: 5px;">Log
+                                                            in
+                                                        </a>
+                                                                @if (Route::has('register'))
                             <a href="{{ route('departamentos.index') }}"
                                 class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500 btn btn-outline-success">Register</a>
-                        @endif
-                    @endauth
-                </div>
-            @endif
-
-            <!-- Authentication Links -->
-
+                @endif
+            @endauth
         </div>
+        @endif
+
+        <!-- Authentication Links -->
+
+    </div>
 
     </div>
 </nav>
@@ -90,7 +84,7 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                     aria-label="Close"></button>
             </div>
-            <form action="{{route('pqr')}}" method="post">
+            <form action="{{ route('pqr') }}" method="post">
                 @csrf
                 <div class="modal-body" style="background: hsl(230, 30%, 40%)">
                     <p class="texto">Por favor, proporcione la siguiente información para procesar su PQR:</p>
@@ -104,7 +98,8 @@
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="tipoPQR" id="queja" value="queja">
+                        <input class="form-check-input" type="radio" name="tipoPQR" id="queja"
+                            value="queja">
                         <label class="form-check-label texto" for="queja">
                             Quejas
                         </label>
