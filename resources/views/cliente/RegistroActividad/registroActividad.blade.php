@@ -4,7 +4,7 @@
     @isset($notificaciones)
         <div class="container">
             <div class="row">
-                @foreach ($notificaciones as $noti)
+                @forelse ($notificaciones as $noti)
                     <div class="col mb-4">
                         <div class="card">
                             <div class="header">
@@ -37,8 +37,9 @@
                             </div>
                         </div>
                     </div>
-                    
-                @endforeach
+                @empty
+                    <p class="texto">Nada</p>
+                @endforelse
             </div>
             <div class="row">
                 <div class="col-6 ">

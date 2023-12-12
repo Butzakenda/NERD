@@ -27,7 +27,6 @@
     place-items: center;
     min-height: 100vh;
     background: hsl(210 30% 24%);
-    border-bottom: 2px solid white;
     margin-bottom: 50px;
 }
 
